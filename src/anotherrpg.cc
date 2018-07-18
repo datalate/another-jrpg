@@ -8,17 +8,22 @@ namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
         win_{window}
     {
-        std::cout << "Hello, world!" << std::endl;
+        std::cout << "Game created" << std::endl;
     }
 
     void AnotherRpg::run() {
         SDL_Event e;
         bool quit{false};
 
+        map_.load();
+
         while (!quit) {
-            while (SDL_PollEvent(&e) != 0) {
+            while (SDL_PollEvent(&e) != 0) { // move to input class
                 if (e.type == SDL_QUIT) {
                     quit = true;
+                }
+                else if (e.type == SDL_KEYDOWN) { // testing
+                    map_.tileAt(5, 1);
                 }
             }
             

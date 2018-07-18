@@ -1,18 +1,19 @@
 #ifndef ANOTHER_RPG_HH
 #define ANOTHER_RPG_HH
 
-#include "SDL_video.h"
 #include "mainwindow.hh"
+#include "map.hh"
 
 namespace Game {
     class AnotherRpg {
-        private:
-            Window::MainWindow& win_;
-
         public:
             AnotherRpg(Window::MainWindow& win);
             
             void run();
+        
+        private:
+            Window::MainWindow& win_;
+            Level::Map map_;
     };
 }
 
