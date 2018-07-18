@@ -14,6 +14,8 @@ namespace Game {
         private:
             Window::MainWindow& win_;
             Level::Map map_;
+
+            void initMap();
     };
 }
 

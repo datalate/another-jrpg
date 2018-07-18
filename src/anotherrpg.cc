@@ -6,8 +6,8 @@ using namespace Window;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}
-    {
+        win_{window} {
+
         std::cout << "Game created" << std::endl;
     }
 
@@ -16,6 +16,7 @@ namespace Game {
         bool quit{false};
 
         map_.load();
+        initMap();
 
         while (!quit) {
             while (SDL_PollEvent(&e) != 0) { // move to input class
@@ -23,14 +24,26 @@ namespace Game {
                     quit = true;
                 }
                 else if (e.type == SDL_KEYDOWN) { // testing
-                    map_.tileAt(5, 1);
+                    win_.clearRenderables();
+                }
+                else if (e.type == SDL_KEYUP) {
+                    initMap();
                 }
             }
             
             win_.clear();
+            win_.render();
             win_.update();
 
-            SDL_Delay(1000);
+            SDL_Delay(20); // ~50 frames per second
         }
     }
+
+    void AnotherRpg::initMap() {
+        for (auto& tile : map_.tileSet()) {
+            win_.addRenderable(tile);
+	    }
+    }
+
 }
+
