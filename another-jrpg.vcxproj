@@ -19,7 +19,25 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\anotherrpg.cc" />
+    <ClCompile Include="src\character.cc" />
+    <ClCompile Include="src\main.cc" />
+    <ClCompile Include="src\mainwindow.cc" />
+    <ClCompile Include="src\map.cc" />
+    <ClCompile Include="src\player.cc" />
+    <ClCompile Include="src\renderable.cc" />
+    <ClCompile Include="src\texturemanager.cc" />
+    <ClCompile Include="src\tile.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\anotherrpg.hh" />
+    <ClInclude Include="src\character.hh" />
+    <ClInclude Include="src\mainwindow.hh" />
+    <ClInclude Include="src\map.hh" />
+    <ClInclude Include="src\player.hh" />
+    <ClInclude Include="src\renderable.hh" />
+    <ClInclude Include="src\texturemanager.hh" />
+    <ClInclude Include="src\tile.hh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A8F1A6A-A045-4412-B78B-0187FAF0FCB2}</ProjectGuid>
