@@ -19,7 +19,12 @@ namespace Window {
 														   std::shared_ptr<SDL_Renderer>& rendr) {
 		auto it = textures_.find(object.textureName());
 		if (it == textures_.end()) { // doesn't already exist
-			std::shared_ptr<SDL_Texture> newTexture{placeholder(32, 32, rendr)};
+			std::shared_ptr<SDL_Texture> newTexture;
+			newTexture = loadFromFile("img/" + object.textureName() + ".png", rendr);
+			if (newTexture == nullptr) { // use placeholder texture in case loading fails
+				newTexture = placeholder(32, 32, rendr);
+			}
+
 			textures_.insert({object.textureName(), newTexture});
 
 			return newTexture;
@@ -49,6 +54,7 @@ namespace Window {
 			std::cout << "IMG_Load() failed for '" << path << "': " << IMG_GetError() << std::endl;
 		}
 		else {
+			std::cout << "Loaded texture: " << path << std::endl;
 			texture.reset(SDL_CreateTextureFromSurface(rendr.get(), surface.get()), SDL_DestroyTexture);
 		}
 		

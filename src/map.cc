@@ -10,7 +10,13 @@ namespace Level {
 
         for (int x{0}; x < w; ++x) {
             for (int y{0}; y < h; ++y) {
-                std::shared_ptr<Tile> newTile{new Tile(x, y, "undefined")};
+				std::shared_ptr<Tile> newTile;
+				if (x == 0 || y == 0 || x == w - 1 || y == h - 1) {
+					newTile.reset(new Tile(x, y, "wall"));
+				}
+				else {
+					newTile.reset(new Tile(x, y, "ground"));
+				}
                 tileSet_.push_back(newTile);
             }
         }

@@ -132,8 +132,9 @@
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /y "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
-xcopy /d /y "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /dy "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
+xcopy /dy "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir)"
+echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -174,8 +175,9 @@ xcopy /d /y "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /d /y "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
-xcopy /d /y "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir)"</Command>
+      <Command>xcopy /dy "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
+xcopy /dy "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir)"
+echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
