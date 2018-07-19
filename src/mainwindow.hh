@@ -14,6 +14,9 @@ namespace Window {
         public:
             MainWindow();
 
+			MainWindow(const MainWindow&) = delete; // disable copy
+			void operator=(const MainWindow&) = delete; // disable assign
+
             bool create(signed int width, signed int height, std::string title);
             void clear() const;
             void update() const;

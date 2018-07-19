@@ -3,7 +3,7 @@
 
 namespace Level {
     Tile::Tile(int x, int y, std::string typeId):
-        Renderable{x * 48, y * 48, typeId}, x_{x}, y_{y}, typeId_{typeId} {
+        Renderable{x * 32, y * 32, typeId}, x_{x}, y_{y}, typeId_{typeId} {
 
         std::cout << "Tile created at: (" << x_ << ", " << y_ << ")" << std::endl;
     }

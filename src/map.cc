@@ -5,8 +5,8 @@ namespace Level {
 
     // placeholder
     void Map::load() {
-        static int w{12};
-        static int h{9};
+        static int w{25};
+        static int h{20};
 
         for (int x{0}; x < w; ++x) {
             for (int y{0}; y < h; ++y) {

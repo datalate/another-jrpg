@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
     atexit(SDL_Quit);
 
     Window::MainWindow window;
-    if (window.create(800, 600, "Another JRPG")) {
+    if (window.create(800, 640, "Another JRPG")) {
         Game::AnotherRpg rpg(window);
         rpg.run();
     }

@@ -1,24 +1,34 @@
 #ifndef TEXTURE_MANAGER_HH
 #define TEXTURE_MANAGER_HH
 
-//#include <map>
+#include <unordered_map>
 #include <memory>
+#include <string>
 #include "SDL_render.h"
-//#include "tile.hh"
+#include "renderable.hh"
 
-class TextureManager {
-    public:
-        TextureManager();
+namespace Window {
+	class TextureManager {
+		public:
+			TextureManager();
+			~TextureManager();
 
-        /*std::shared_ptr<SDL_Texture> textureOf(const Level::Tile& tile,
-                                               std::shared_ptr<SDL_Renderer>& renderer);*/
-        std::shared_ptr<SDL_Texture> placeholder(int width, int height,
-                                                 std::shared_ptr<SDL_Renderer>& renderer) const;
+			TextureManager(const TextureManager&) = delete; // disable copy
+			void operator=(const TextureManager&) = delete; // disable assign
 
-    private:
-        //std::map<std::string, std::shared_ptr<SDL_Texture>> tileTextures_; // has ownership
-        // TODO: load from file
-};
+			std::shared_ptr<SDL_Texture> textureOf(const Renderable& object,
+												   std::shared_ptr<SDL_Renderer>& rendr);
+			std::shared_ptr<SDL_Texture> placeholder(int width, int height,
+													 std::shared_ptr<SDL_Renderer>& rendr) const;
+
+		private:
+			// has ownership, textureID as key
+			std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textures_;
+			
+			std::shared_ptr<SDL_Texture> loadFromFile(const std::string& file,
+											          std::shared_ptr<SDL_Renderer>& rendr) const;
+	};
+}
 
 #endif
 
