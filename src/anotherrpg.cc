@@ -6,7 +6,7 @@ using namespace Window;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window} {
+        win_{window}, player_{new Player(1, 1)} {
 
         std::cout << "Game created" << std::endl;
     }
@@ -24,10 +24,49 @@ namespace Game {
                     quit = true;
                 }
                 else if (e.type == SDL_KEYDOWN) { // testing
-                    win_.clearRenderables();
-                }
-                else if (e.type == SDL_KEYUP) {
-                    initMap();
+                    switch (e.key.keysym.sym) {
+                    case SDLK_w: {
+                        const int x{player_->x()};
+                        const int y{player_->y() - 1};
+
+                        if (map_.canMove(x, y)) {
+                            player_->moveTo(x, y);
+                        }
+
+                        break;
+                    }
+                    case SDLK_s: {
+                        const int x{player_->x()};
+                        const int y{player_->y() + 1};
+
+                        if (map_.canMove(x, y)) {
+                            player_->moveTo(x, y);
+                        }
+
+                        break;
+                    }
+                    case SDLK_a: {
+                        const int x{player_->x() - 1};
+                        const int y{player_->y()};
+
+                        if (map_.canMove(x, y)) {
+                            player_->moveTo(x, y);
+                        }
+
+                        break;
+                    }
+                    case SDLK_d: {
+                        const int x{player_->x() + 1};
+                        const int y{player_->y()};
+
+                        if (map_.canMove(x, y)) {
+                            player_->moveTo(x, y);
+                        }
+
+                        break;
+                    }
+                    default: { }
+                    }
                 }
             }
             
@@ -43,6 +82,7 @@ namespace Game {
         for (auto& tile : map_.tileSet()) {
             win_.addRenderable(tile);
 	    }
+        win_.addRenderable(player_);
     }
 
 }
