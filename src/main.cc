@@ -4,6 +4,10 @@
 #include "mainwindow.hh"
 
 int main(int argc, char *argv[]) {
+    // Suppress unused parameter warning
+    (void)argc;
+    (void)argv;
+
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
 		std::cout << "SDL_Init() failed: " << SDL_GetError() << std::endl;
 
