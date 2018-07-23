@@ -5,6 +5,7 @@
 #include "mainwindow.hh"
 #include "map.hh"
 #include "player.hh"
+#include "levelmanager.hh"
 
 namespace Game {
     class AnotherRpg {
@@ -15,10 +16,12 @@ namespace Game {
         
         private:
             Window::MainWindow& win_;
-            Level::Map map_;
-            std::shared_ptr<Player> player_;
+            Level::LevelManager lvls_;
 
-            void initMap();
+            std::shared_ptr<Player> player_;
+            std::shared_ptr<Level::Map> currentMap_;
+
+            bool initMap(const std::string &map);
     };
 }
 

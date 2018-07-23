@@ -6,7 +6,7 @@ using namespace Window;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}, player_{new Player(1, 1)} {
+        win_{window}, player_{new Player(1, 1)}, currentMap_{nullptr} {
 
         std::cout << "Game created" << std::endl;
     }
@@ -15,8 +15,11 @@ namespace Game {
         SDL_Event e;
         bool quit{false};
 
-        map_.load();
-        initMap();
+        lvls_.loadFolder("lev/");
+
+        if (!initMap("level0")) {
+            quit = true;
+        }
 
         while (!quit) {
             while (SDL_PollEvent(&e) != 0) { // move to input class
@@ -29,7 +32,7 @@ namespace Game {
                         const int x{player_->x()};
                         const int y{player_->y() - 1};
 
-                        if (map_.canMove(x, y)) {
+                        if (currentMap_->canMove(x, y)) {
                             player_->moveTo(x, y);
                         }
 
@@ -39,7 +42,7 @@ namespace Game {
                         const int x{player_->x()};
                         const int y{player_->y() + 1};
 
-                        if (map_.canMove(x, y)) {
+                        if (currentMap_->canMove(x, y)) {
                             player_->moveTo(x, y);
                         }
 
@@ -49,7 +52,7 @@ namespace Game {
                         const int x{player_->x() - 1};
                         const int y{player_->y()};
 
-                        if (map_.canMove(x, y)) {
+                        if (currentMap_->canMove(x, y)) {
                             player_->moveTo(x, y);
                         }
 
@@ -59,7 +62,7 @@ namespace Game {
                         const int x{player_->x() + 1};
                         const int y{player_->y()};
 
-                        if (map_.canMove(x, y)) {
+                        if (currentMap_->canMove(x, y)) {
                             player_->moveTo(x, y);
                         }
 
@@ -78,11 +81,21 @@ namespace Game {
         }
     }
 
-    void AnotherRpg::initMap() {
-        for (auto& tile : map_.tileSet()) {
-            win_.addRenderable(tile);
+    bool AnotherRpg::initMap(const std::string& map) {
+        if (lvls_.exists(map)) {
+            currentMap_ = lvls_[map];
+            for (auto& tile : currentMap_->tiles()) {
+                win_.addRenderable(tile);
+            }
+            win_.addRenderable(player_);
+
+            std::cout << "initMap(\"" << map << "\")" << std::endl;
+            return true;
 	    }
-        win_.addRenderable(player_);
+        else {
+            std::cout << "Failed to init map " << map << std::endl;
+            return false;
+        }
     }
 
 }
