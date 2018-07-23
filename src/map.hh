@@ -7,29 +7,45 @@
 #include "tile.hh"
 
 namespace Level {
+    struct Portal {
+        unsigned int sourceX;
+        unsigned int sourceY;
+        unsigned int destX;
+        unsigned int destY;
+        std::string destMap;
+    };
+
     class Map {
         public:
             Map(const std::string& name);
             void load();
 
             std::string name() const { return name_; }
-            int width() const { return width_; }
-            int height() const { return height_; }
-            bool canMove(int x, int y) const;
+            unsigned int width() const { return width_; }
+            unsigned int height() const { return height_; }
+            bool canMove(unsigned int x, unsigned int y) const;
             bool good() const;
 
-            void setTiles(int width, int height, std::vector<std::shared_ptr<Tile>> tiles);
-            const std::shared_ptr<Tile>& tileAt(int x, int y) const;
+            void setTiles(unsigned int width, unsigned int height, std::vector<std::shared_ptr<Tile>> tiles);
+            const std::shared_ptr<Tile>& tileAt(unsigned int x, unsigned int y) const;
             const std::vector<std::shared_ptr<Tile>>& tiles() const;
             std::vector<std::shared_ptr<Tile>>& tiles();
 
+            // TODO: should we make a generic object class and inherit portal from it?
+            // A new method could be created: objectAt which would return ptr to the object.
+            // We could also restrict number of objects per tile to one.
+            std::shared_ptr<Portal> portalAt(unsigned int x, unsigned int y);
+            void addPortal(const Portal& portal);
+
         private:
-            std::vector<std::shared_ptr<Tile>> tiles_; // has ownership
             void dump() const;
 
+            std::vector<std::shared_ptr<Tile>> tiles_; // has ownership
+            std::vector<std::shared_ptr<Portal>> portals_; // has ownership
+
             std::string name_;
-            int width_;
-            int height_;
+            unsigned int width_;
+            unsigned int height_;
     };
 }
 

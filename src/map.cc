@@ -3,16 +3,18 @@
 
 namespace Level {
     Map::Map(const std::string& name):
-        name_{name}, width_{-1}, height_{-1} { }
+        name_{name}, width_{0}, height_{0} { }
 
     // placeholder
     void Map::load() {
-        static int w{25};
-        static int h{20};
+        static unsigned int w{25};
+        static unsigned int h{20};
 
         tiles_.clear();
-        for (int y{0}; y < h; ++y) {
-            for (int x{0}; x < w; ++x) {
+        portals_.clear();
+
+        for (unsigned int y{0}; y < h; ++y) {
+            for (unsigned int x{0}; x < w; ++x) {
 				if (x == 0 || y == 0 || x == w - 1 || y == h - 1) {
                     tiles_.push_back(std::shared_ptr<Tile>(new Tile(x, y, "wall")));
 				}
@@ -28,19 +30,18 @@ namespace Level {
         dump();
     }
 
-    bool Map::canMove(int x, int y) const {
-        // TODO
-        return tileAt(x, y)->textureName() == "ground";
+    bool Map::canMove(unsigned int x, unsigned int y) const {
+        return (x < width() && y < height() && tileAt(x, y)->textureName() == "ground");
     }
 
     bool Map::good() const {
-        return (width_ > 0 && height_ > 0 && !tiles_.empty());
+        return (width() > 0 && height() > 0 && !tiles_.empty());
     }
 
     void Map::dump() const {
         std::cout << "Level tile dump:" << std::endl;
-        for (int y{0}; y < height(); ++y) {
-            for (int x{0}; x < width(); ++x) {
+        for (unsigned int y{0}; y < height(); ++y) {
+            for (unsigned int x{0}; x < width(); ++x) {
                 if (canMove(x, y)) {
                     std::cout << "o";
                 }
@@ -52,14 +53,13 @@ namespace Level {
         }
     }
 
-    void Map::setTiles(int width, int height, std::vector<std::shared_ptr<Tile>> tiles) {
+    void Map::setTiles(unsigned int width, unsigned int height, std::vector<std::shared_ptr<Tile>> tiles) {
         width_ = width;
         height_ = height;
         tiles_ = tiles;
     }
 
-    const std::shared_ptr<Tile>& Map::tileAt(int x, int y) const {
-        //std::cout << y*width() + x << std::endl;
+    const std::shared_ptr<Tile>& Map::tileAt(unsigned int x, unsigned int y) const {
         return tiles_.at(y * width() + x);
     }
 
@@ -69,6 +69,20 @@ namespace Level {
 
     std::vector<std::shared_ptr<Tile>>& Map::tiles() {
         return tiles_;
+    }
+
+    std::shared_ptr<Portal> Map::portalAt(unsigned int x, unsigned int y) {
+        for (auto& portal: portals_) {
+            if (portal->sourceX == x && portal->sourceY == y) {
+                return portal;
+            }
+        }
+
+        return nullptr; // nothing found
+    }
+
+    void Map::addPortal(const Portal& portal) {
+        portals_.push_back(std::make_shared<Portal>(portal));
     }
 }
 

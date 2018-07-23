@@ -22,11 +22,11 @@ namespace Window {
 													 std::shared_ptr<SDL_Renderer>& rendr) const;
 
 		private:
-			// has ownership, textureID as key
-			std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textures_;
-			
 			std::shared_ptr<SDL_Texture> loadFromFile(const std::string& file,
 											          std::shared_ptr<SDL_Renderer>& rendr) const;
+
+            // has ownership, textureID as key
+			std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textures_;
 	};
 }
 

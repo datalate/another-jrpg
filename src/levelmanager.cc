@@ -6,6 +6,40 @@
 
 namespace fs = std::filesystem;
 
+namespace YAML {
+    using Level::Portal;
+
+    // Conversions for portal between internal and external (level file) format
+	template<>
+    struct convert<Portal> {
+		static Node encode(const Portal& rhs) {
+			Node node;
+
+            node["sourceX"] = rhs.sourceX;
+            node["sourceY"] = rhs.sourceY;
+            node["destX"] = rhs.destX;
+            node["destY"] = rhs.destY;
+            node["destMap"] = rhs.destMap;;
+
+			return node;
+		}
+
+        static bool decode(const Node& node, Portal& rhs) {
+            if (!node.IsMap() || node.size() != 5) {
+                return false;
+            }
+
+            rhs.sourceX = node["sourceX"].as<unsigned int>();
+            rhs.sourceY = node["sourceY"].as<unsigned int>();
+            rhs.destX = node["destX"].as<unsigned int>();
+            rhs.destY = node["destY"].as<unsigned int>();
+            rhs.destMap = node["destMap"].as<std::string>();
+
+            return true;
+        }
+    };
+}
+
 namespace Level {
     LevelManager::LevelManager() {
         /*std::shared_ptr<Map> testMap(new Map("testMap"));
@@ -89,6 +123,17 @@ namespace Level {
         std::shared_ptr<Map> map(new Map(name));
         map->setTiles(width, height, tiles);
         
+        if (node["portals"]) {
+            YAML::Node portalsNode = node["portals"];
+
+            // TODO: exception handling
+            // A generic getter for required/optional parameters would be nice
+            for (YAML::const_iterator it = portalsNode.begin(); it != portalsNode.end(); ++it) {
+                Portal newPortal = it->as<Portal>();
+                map->addPortal(newPortal);
+            }
+        }
+
         std::cout << "Loaded level: " << file << std::endl;
 
         return map;
@@ -121,55 +166,3 @@ namespace Level {
     }
 }
 
-
-        /*std::vector<std::shared_ptr<Tile>> tiles;
-        std::ifstream ifs(file, std::ifstream::in);
-
-        if (ifs.is_open()) {
-            std::istringstream ss;
-            std::string line;
-            std::string col;
-            std::vector<std::string> cols;
-
-            int lineNo{0};
-
-            while (ifs) {
-                std::getline(ifs, line);
-                lineNo++;
-
-                if (line.empty()) {
-                    continue;
-                }
-
-                // Reset for new line
-                ss.str(line);
-                ss.clear();
-                cols.clear();
-
-                while (std::getline(ss, col, ';')) {
-                    cols.push_back(col);
-                }
-
-                if (cols.size() < 4) {
-                    std::cout << "Bad level format in level '" << path << "', row " << lineNo << std::endl;
-                    continue;
-                }
-
-                // Parse item type
-                if (cols[0] == "tile") {
-                    // FORMAT: tile;tileId;x;y
-                    // TODO: should we include tileId checking?
-                    std::string& tileId{cols[1]};
-                    int x{std::stoi(cols[2])}; // TODO: exception handling for std::stoi
-                    int y{std::stoi(cols[3])};
-
-                    tiles.push_back(std::shared_ptr<Tile>(new Tile(x, y, tileId)));
-                } // No other types atm
-                else {
-                    std::cout << "Incorrect item type in level'" << path << "', row " << lineNo << std::endl;
-                }
-            }
-        }
-        else {
-            std::cout << "Failed to open level '" << path <<  "' for reading" << std::endl;
-        }*/

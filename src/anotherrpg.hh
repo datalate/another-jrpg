@@ -15,13 +15,14 @@ namespace Game {
             void run();
         
         private:
+            bool switchToMap(const std::string &map);
+            void movePlayer(unsigned int x, unsigned int y);
+
             Window::MainWindow& win_;
             Level::LevelManager lvls_;
 
             std::shared_ptr<Player> player_;
             std::shared_ptr<Level::Map> currentMap_;
-
-            bool initMap(const std::string &map);
     };
 }
 

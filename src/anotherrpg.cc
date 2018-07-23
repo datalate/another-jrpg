@@ -12,15 +12,15 @@ namespace Game {
     }
 
     void AnotherRpg::run() {
-        SDL_Event e;
         bool quit{false};
 
         lvls_.loadFolder("lev/");
 
-        if (!initMap("level0")) {
+        if (!switchToMap("level0")) {
             quit = true;
         }
 
+        SDL_Event e;
         while (!quit) {
             while (SDL_PollEvent(&e) != 0) { // move to input class
                 if (e.type == SDL_QUIT) {
@@ -31,40 +31,28 @@ namespace Game {
                     case SDLK_w: {
                         const int x{player_->x()};
                         const int y{player_->y() - 1};
-
-                        if (currentMap_->canMove(x, y)) {
-                            player_->moveTo(x, y);
-                        }
+                        movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_s: {
                         const int x{player_->x()};
                         const int y{player_->y() + 1};
-
-                        if (currentMap_->canMove(x, y)) {
-                            player_->moveTo(x, y);
-                        }
+                        movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_a: {
                         const int x{player_->x() - 1};
                         const int y{player_->y()};
-
-                        if (currentMap_->canMove(x, y)) {
-                            player_->moveTo(x, y);
-                        }
+                        movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_d: {
                         const int x{player_->x() + 1};
                         const int y{player_->y()};
-
-                        if (currentMap_->canMove(x, y)) {
-                            player_->moveTo(x, y);
-                        }
+                        movePlayer(x, y);
 
                         break;
                     }
@@ -81,8 +69,10 @@ namespace Game {
         }
     }
 
-    bool AnotherRpg::initMap(const std::string& map) {
+    bool AnotherRpg::switchToMap(const std::string& map) {
         if (lvls_.exists(map)) {
+            win_.clearRenderables();
+
             currentMap_ = lvls_[map];
             for (auto& tile : currentMap_->tiles()) {
                 win_.addRenderable(tile);
@@ -98,5 +88,17 @@ namespace Game {
         }
     }
 
+    void AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
+        if (currentMap_->canMove(x, y)) {
+            player_->moveTo(x, y);
+
+            auto portal = currentMap_->portalAt(x, y);
+            if (portal != nullptr) {
+                // Transition between maps
+                switchToMap(portal->destMap);
+                player_->moveTo(portal->destX, portal->destY);
+            }
+        }
+    }
 }
 
