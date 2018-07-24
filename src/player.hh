@@ -1,13 +1,10 @@
 #ifndef PLAYER_HH
 #define PLAYER_HH
 
-#include "renderable.hh"
+#include "character.hh"
 
-namespace Game {
-    static const unsigned int CHARACTER_WIDTH{32};
-    static const unsigned int CHARACTER_HEIGHT{32};
-
-	class Player : public Renderable {
+namespace Character {
+	class Player : public Character {
 	    public:
 		    Player(unsigned int x, unsigned int y);
 		    ~Player();
@@ -15,13 +12,7 @@ namespace Game {
             Player(const Player&) = delete; // disable copy
             void operator=(const Player&) = delete; // disable assign
 
-            void moveTo(unsigned int x, unsigned int y); // doesn't perform checks
-		    unsigned int x() const { return x_; }
-		    unsigned int y() const { return y_; }
-
-	    private:
-		    unsigned int x_;
-		    unsigned int y_;
+            void moveTo(unsigned int x, unsigned int y) override;
 	};
 }
 

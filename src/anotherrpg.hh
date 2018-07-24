@@ -24,7 +24,7 @@ namespace Game {
             Window::MainWindow& win_;
             Level::LevelManager lvls_;
 
-            std::shared_ptr<Player> player_; // has ownership
+            std::shared_ptr<Character::Player> player_; // has ownership
             std::shared_ptr<Level::Map> currentMap_; // no ownership
     };
 }

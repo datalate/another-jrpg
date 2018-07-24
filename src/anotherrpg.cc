@@ -2,7 +2,8 @@
 #include <iostream>
 #include <SDL.h>
 
-using namespace Window;
+using Window::MainWindow;
+using Character::Player;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
