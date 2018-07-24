@@ -1,21 +1,22 @@
 #include "renderable.hh"
 
-Renderable::Renderable(int renderX, int renderY, std::string textureName):
+Renderable::Renderable(unsigned int renderX, unsigned int renderY, const std::string& textureName):
     textureName_{textureName}, texture_{nullptr} {
 
     rect_.x = renderX;
     rect_.y = renderY;
 }
 
-Renderable::~Renderable() { }
+Renderable::~Renderable() {
+}
 
-void Renderable::setTexture(std::shared_ptr<SDL_Texture> texture, int width, int height) {
+void Renderable::setTexture(std::shared_ptr<SDL_Texture> texture, unsigned int width, unsigned int height) {
     texture_ = texture;
     rect_.w = width;
     rect_.h = height;
 }
 
-void Renderable::setRenderPos(int renderX, int renderY) {
+void Renderable::setRenderPos(unsigned int renderX, unsigned int renderY) {
     rect_.x = renderX;
     rect_.y = renderY;
 }

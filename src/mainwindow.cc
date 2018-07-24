@@ -6,7 +6,7 @@ namespace Window {
         renderer_{nullptr}
     { }
 
-    bool MainWindow::create(signed int width, signed int height, std::string title) {
+    bool MainWindow::create(unsigned int width, unsigned int height, const std::string& title) {
         bool success{true};
 
         renderer_ = nullptr;

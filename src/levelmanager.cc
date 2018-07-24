@@ -49,7 +49,7 @@ namespace Level {
     }
 
     void LevelManager::loadFolder(const std::string& dir) {
-        for (auto& it: fs::directory_iterator(dir)) {
+        for (const auto& it: fs::directory_iterator(dir)) {
             if (it.is_directory()) {
                 continue;
             }
@@ -71,6 +71,7 @@ namespace Level {
         return maps_[map];
     }
 
+    // This probably needs to get splitted to multiple methods later on
     std::shared_ptr<Map> LevelManager::loadFile(const std::string& file) { 
         bool ok{true};
         YAML::Node node;
@@ -82,11 +83,11 @@ namespace Level {
             ok = false;
         }
         
-        if (!ok) return std::shared_ptr<Map>(nullptr);
+        if (!ok) return nullptr;
 
         std::string name;
-        unsigned int width;
-        unsigned int height;
+        unsigned int width{0};
+        unsigned int height{0};
         std::vector<std::string> tileData;
        
         try {
@@ -99,11 +100,11 @@ namespace Level {
             ok = false;
         }
 
-        if (!ok) return std::shared_ptr<Map>(nullptr);
+        if (!ok) return nullptr;
         
         if (tileData.size() != width * height) {
             std::cout << "Incorrect number of tiles in level '" << file << "'" << std::endl;
-            return std::shared_ptr<Map>(nullptr);
+            return nullptr;
         }
 
         std::vector<std::shared_ptr<Tile>> tiles;
@@ -111,7 +112,7 @@ namespace Level {
         unsigned int y{0};
 
         for (const auto& tile: tileData) {
-            tiles.push_back(std::shared_ptr<Tile>(new Tile(x, y, tile)));
+            tiles.push_back(std::make_shared<Tile>(x, y, tile));
             ++x;
 
             if (x == width) {
@@ -120,7 +121,7 @@ namespace Level {
             }
         }
 
-        std::shared_ptr<Map> map(new Map(name));
+        std::shared_ptr<Map> map(std::make_shared<Map>(name));
         map->setTiles(width, height, tiles);
         
         if (node["portals"]) {
@@ -141,7 +142,7 @@ namespace Level {
 
     // Dumps level as YAML-format to stdout
     void LevelManager::writeMap(const std::string& map) {
-        auto it = maps_.find(map);
+        const auto it = maps_.find(map);
         if (it != maps_.end()) {
             YAML::Emitter out;
             

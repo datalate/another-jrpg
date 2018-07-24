@@ -3,7 +3,8 @@
 
 namespace Level {
     Map::Map(const std::string& name):
-        name_{name}, width_{0}, height_{0} { }
+        name_{name}, width_{0}, height_{0}
+    { }
 
     // placeholder
     void Map::load() {
@@ -16,10 +17,10 @@ namespace Level {
         for (unsigned int y{0}; y < h; ++y) {
             for (unsigned int x{0}; x < w; ++x) {
 				if (x == 0 || y == 0 || x == w - 1 || y == h - 1) {
-                    tiles_.push_back(std::shared_ptr<Tile>(new Tile(x, y, "wall")));
+                    tiles_.push_back(std::make_shared<Tile>(x, y, "wall"));
 				}
 				else {
-                    tiles_.push_back(std::shared_ptr<Tile>(new Tile(x, y, "ground")));
+                    tiles_.push_back(std::make_shared<Tile>(x, y, "ground"));
 				}
             }
         }
@@ -53,10 +54,11 @@ namespace Level {
         }
     }
 
-    void Map::setTiles(unsigned int width, unsigned int height, std::vector<std::shared_ptr<Tile>> tiles) {
+    void Map::setTiles(unsigned int width, unsigned int height,
+                       const std::vector<std::shared_ptr<Tile>> &tiles) {
         width_ = width;
         height_ = height;
-        tiles_ = tiles;
+        tiles_ = tiles; // perform copy
     }
 
     const std::shared_ptr<Tile>& Map::tileAt(unsigned int x, unsigned int y) const {

@@ -17,7 +17,7 @@ namespace Window {
 			MainWindow(const MainWindow&) = delete; // disable copy
 			void operator=(const MainWindow&) = delete; // disable assign
 
-            bool create(signed int width, signed int height, std::string title);
+            bool create(unsigned int width, unsigned int height, const std::string& title);
             void clear() const;
             void update() const;
             void render() const;
@@ -26,11 +26,11 @@ namespace Window {
             void clearRenderables();
     
         private:
-            std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window_; // has ownership
+            std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window_;
             std::shared_ptr<SDL_Renderer> renderer_; // has ownership
 
             TextureManager textures_;
-            std::vector<std::shared_ptr<Renderable>> renderables_;
+            std::vector<std::shared_ptr<Renderable>> renderables_; // no ownership
     };
 }
 

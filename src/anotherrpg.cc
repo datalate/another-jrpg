@@ -6,7 +6,7 @@ using namespace Window;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}, player_{new Player(1, 1)}, currentMap_{nullptr} {
+        win_{window}, player_{std::make_shared<Player>(1, 1)}, currentMap_{nullptr} {
 
         std::cout << "Game created" << std::endl;
     }
@@ -29,29 +29,29 @@ namespace Game {
                 else if (e.type == SDL_KEYDOWN) { // testing
                     switch (e.key.keysym.sym) {
                     case SDLK_w: {
-                        const int x{player_->x()};
-                        const int y{player_->y() - 1};
+                        const unsigned int x{player_->x()};
+                        const unsigned int y{player_->y() - 1};
                         movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_s: {
-                        const int x{player_->x()};
-                        const int y{player_->y() + 1};
+                        const unsigned int x{player_->x()};
+                        const unsigned int y{player_->y() + 1};
                         movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_a: {
-                        const int x{player_->x() - 1};
-                        const int y{player_->y()};
+                        const unsigned int x{player_->x() - 1};
+                        const unsigned int y{player_->y()};
                         movePlayer(x, y);
 
                         break;
                     }
                     case SDLK_d: {
-                        const int x{player_->x() + 1};
-                        const int y{player_->y()};
+                        const unsigned int x{player_->x() + 1};
+                        const unsigned int y{player_->y()};
                         movePlayer(x, y);
 
                         break;
@@ -96,6 +96,7 @@ namespace Game {
             if (portal != nullptr) {
                 // Transition between maps
                 switchToMap(portal->destMap);
+
                 player_->moveTo(portal->destX, portal->destY);
             }
         }

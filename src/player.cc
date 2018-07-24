@@ -2,17 +2,17 @@
 #include <iostream>
 
 namespace Game {
-	Player::Player(int x, int y):
-		Renderable{x * 32, y * 32, "player"}, x_{x}, y_{y} { }
+	Player::Player(unsigned int x, unsigned int y):
+		Renderable{x * CHARACTER_WIDTH, y * CHARACTER_HEIGHT, "player"}, x_{x}, y_{y}
+    { }
 
     Player::~Player() {
+    }
 
-	}
-
-    void Player::moveTo(int x, int y) {
+    void Player::moveTo(unsigned int x, unsigned int y) {
         x_ = x;
         y_ = y;
-        setRenderPos(x * 32, y * 32);
+        setRenderPos(x * CHARACTER_WIDTH, y * CHARACTER_HEIGHT);
 
         std::cout << "Move player to: (" << x << ", " << y << ")" << std::endl;
     }

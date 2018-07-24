@@ -17,16 +17,18 @@ namespace Level {
 
     class Map {
         public:
-            Map(const std::string& name);
-            void load();
+            explicit Map(const std::string& name);
 
-            std::string name() const { return name_; }
+            void load(); // for testing
+
+            const std::string& name() const { return name_; }
             unsigned int width() const { return width_; }
             unsigned int height() const { return height_; }
-            bool canMove(unsigned int x, unsigned int y) const;
-            bool good() const;
+            bool canMove(unsigned int x, unsigned int y) const; // is a ground tile
+            bool good() const; // map has tiles
 
-            void setTiles(unsigned int width, unsigned int height, std::vector<std::shared_ptr<Tile>> tiles);
+            void setTiles(unsigned int width, unsigned int height,
+                          const std::vector<std::shared_ptr<Tile>> &tiles);
             const std::shared_ptr<Tile>& tileAt(unsigned int x, unsigned int y) const;
             const std::vector<std::shared_ptr<Tile>>& tiles() const;
             std::vector<std::shared_ptr<Tile>>& tiles();

@@ -10,6 +10,9 @@ namespace Level {
     class LevelManager {
         public:
             LevelManager();
+
+            LevelManager(const LevelManager&) = delete; // disable copy
+            void operator=(const LevelManager&) = delete; // disable assign
             
             void loadFolder(const std::string& dir);
             bool exists(const std::string& map) const;
@@ -19,7 +22,8 @@ namespace Level {
             std::shared_ptr<Map> loadFile(const std::string& file);
             void writeMap(const std::string& map);
             
-            std::unordered_map<std::string, std::shared_ptr<Map>> maps_; // has ownership
+            // has ownership, map name as key
+            std::unordered_map<std::string, std::shared_ptr<Map>> maps_;
     };
 }
 

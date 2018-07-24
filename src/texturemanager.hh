@@ -1,5 +1,5 @@
-#ifndef TEXTURE_MANAGER_HH
-#define TEXTURE_MANAGER_HH
+#ifndef TEXTUREMANAGER_HH
+#define TEXTUREMANAGER_HH
 
 #include <unordered_map>
 #include <memory>
@@ -17,15 +17,15 @@ namespace Window {
 			void operator=(const TextureManager&) = delete; // disable assign
 
 			std::shared_ptr<SDL_Texture> textureOf(const Renderable& object,
-												   std::shared_ptr<SDL_Renderer>& rendr);
+												   const std::shared_ptr<SDL_Renderer>& rendr);
 			std::shared_ptr<SDL_Texture> placeholder(int width, int height,
-													 std::shared_ptr<SDL_Renderer>& rendr) const;
+													 const std::shared_ptr<SDL_Renderer>& rendr) const;
 
 		private:
-			std::shared_ptr<SDL_Texture> loadFromFile(const std::string& file,
-											          std::shared_ptr<SDL_Renderer>& rendr) const;
+			std::shared_ptr<SDL_Texture> loadFromFile(const std::string& path,
+											          const std::shared_ptr<SDL_Renderer>& rendr) const;
 
-            // has ownership, textureID as key
+            // has ownership, texture id as key
 			std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textures_;
 	};
 }

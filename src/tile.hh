@@ -5,18 +5,21 @@
 #include "renderable.hh"
 
 namespace Level {
+    static const unsigned int TILE_WIDTH{32};
+    static const unsigned int TILE_HEIGHT{32};
+
     class Tile : public Renderable {
         public:
-            Tile(int x, int y, std::string typeID);
+            Tile(unsigned int x, unsigned int y, const std::string& typeID);
             ~Tile();
 
-            int x() const { return x_; }
-            int y() const { return y_; }
+            unsigned int x() const { return x_; }
+            unsigned int y() const { return y_; }
             const std::string& typeId() const { return typeId_; }
 
         private:
-            int x_;
-            int y_;
+            unsigned int x_;
+            unsigned int y_;
             std::string typeId_;
     };
 }
