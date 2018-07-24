@@ -13,7 +13,5 @@ namespace Character {
         x_ = x;
         y_ = y;
         setRenderPos(x * CHARACTER_WIDTH, y * CHARACTER_HEIGHT);
-
-        std::cout << "Move player to: (" << x << ", " << y << ")" << std::endl;
-    }
+    } 
 }

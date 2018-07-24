@@ -27,6 +27,14 @@ namespace Game {
                 if (e.type == SDL_QUIT) {
                     quit = true;
                 }
+                else if (e.type == SDL_WINDOWEVENT) {
+                    if (e.window.event == SDL_WINDOWEVENT_SHOWN) {
+                        win_.render();
+                    }
+                    else if (e.window.event == SDL_WINDOWEVENT_EXPOSED) {
+                        win_.update();
+                    }
+                }
                 else if (e.type == SDL_KEYDOWN) { // testing
                     switch (e.key.keysym.sym) {
                     case SDLK_w: {
@@ -59,14 +67,16 @@ namespace Game {
                     }
                     default: { }
                     }
+
+                    // TODO: only update when necessary
+
+                    // Window is not updated on every frame
+                    win_.render();
+                    win_.update();
                 }
             }
             
-            win_.clear();
-            win_.render();
-            win_.update();
-
-            SDL_Delay(20); // ~50 frames per second
+            SDL_Delay(10); // ~100 frames per second
         }
     }
 
