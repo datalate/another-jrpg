@@ -1,9 +1,11 @@
 #include "map.hh"
 #include <iostream>
 
+using Character::Npc;
+
 namespace Level {
     Map::Map(const std::string& name):
-        name_{name}, width_{0}, height_{0}
+        name_{name}, width_{0}, height_{0}, playerSpawn_{0, 0}
     { }
 
     // placeholder
@@ -32,7 +34,8 @@ namespace Level {
     }
 
     bool Map::canMove(unsigned int x, unsigned int y) const {
-        return (x < width() && y < height() && tileAt(x, y)->textureName() == "ground");
+        bool tileOk{x < width() && y < height() && !tileAt(x, y)->solid()};
+        return tileOk && npcAt(x, y) == nullptr;
     }
 
     bool Map::good() const {
@@ -55,7 +58,7 @@ namespace Level {
     }
 
     void Map::setTiles(unsigned int width, unsigned int height,
-                       const std::vector<std::shared_ptr<Tile>> &tiles) {
+                       const std::vector<std::shared_ptr<Tile>>& tiles) {
         width_ = width;
         height_ = height;
         tiles_ = tiles; // perform copy
@@ -65,12 +68,8 @@ namespace Level {
         return tiles_.at(y * width() + x);
     }
 
-    const std::vector<std::shared_ptr<Tile>>& Map::tiles() const {
-        return tiles_;
-    }
-
-    std::vector<std::shared_ptr<Tile>>& Map::tiles() {
-        return tiles_;
+    void Map::setNpcs(const std::vector<std::shared_ptr<Npc>>& npcs) {
+        npcs_ = npcs;
     }
 
     bool Map::hasPlayerSpawn() const {
@@ -90,6 +89,17 @@ namespace Level {
 
         return nullptr; // nothing found
     }
+
+    std::shared_ptr<Npc> Map::npcAt(unsigned int x, unsigned int y) const {
+        for (auto& npc: npcs_) {
+            if (npc->x() == x && npc->y() == y) {
+                return npc;
+            }
+        }
+
+        return nullptr; // nothing found
+    }
+
 
     void Map::addPortal(const Portal& portal) {
         portals_.push_back(std::make_shared<Portal>(portal));

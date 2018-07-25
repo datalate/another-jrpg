@@ -19,7 +19,7 @@ namespace Game {
         
         private:
             bool switchToMap(const std::string& map);
-            void movePlayer(unsigned int x, unsigned int y);
+            bool movePlayer(unsigned int x, unsigned int y);
 
             Window::MainWindow& win_;
             Level::LevelManager lvls_;

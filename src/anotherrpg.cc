@@ -67,7 +67,8 @@ namespace Game {
 
                         break;
                     }
-                    default: { }
+
+                    default: {}
                     }
 
                     // TODO: only update when necessary
@@ -84,11 +85,14 @@ namespace Game {
 
     bool AnotherRpg::switchToMap(const std::string& map) {
         if (lvls_.exists(map)) {
-            win_.clearRenderables();
-
             currentMap_ = lvls_[map];
-            for (auto& tile : currentMap_->tiles()) {
+
+            win_.clearRenderables();
+            for (auto& tile: currentMap_->tiles()) {
                 win_.addRenderable(tile);
+            }
+            for (auto& npc: currentMap_->npcs()) {
+                win_.addRenderable(npc);
             }
             win_.addRenderable(player_);
 
@@ -106,7 +110,7 @@ namespace Game {
         }
     }
 
-    void AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
+    bool AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
         if (currentMap_->canMove(x, y)) {
             player_->moveTo(x, y);
 
@@ -117,6 +121,11 @@ namespace Game {
 
                 player_->moveTo(portal->destX, portal->destY);
             }
+
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }

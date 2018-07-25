@@ -3,8 +3,10 @@
 #include <iostream>
 #include <vector>
 #include <yaml-cpp/yaml.h>
+#include "npc.hh"
 
 namespace fs = std::filesystem;
+using Character::Npc;
 
 namespace YAML {
     using Level::Portal;
@@ -165,6 +167,10 @@ namespace Level {
         if (node["spawn"]) {
             map->setPlayerSpawn(node["spawn"].as<Position>());
         }
+
+        std::vector<std::shared_ptr<Npc>> npcs;
+        npcs.push_back(std::make_shared<Npc>(5, 5));
+        map->setNpcs(npcs);
 
         std::cout << "Loaded level: " << file << std::endl;
 
