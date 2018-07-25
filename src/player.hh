@@ -6,7 +6,7 @@
 namespace Character {
 	class Player : public Character {
 	    public:
-		    Player(unsigned int x, unsigned int y);
+		    Player();
 		    ~Player();
 
             Player(const Player&) = delete; // disable copy

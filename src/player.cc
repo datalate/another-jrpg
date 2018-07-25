@@ -2,8 +2,8 @@
 #include <iostream>
 
 namespace Character {
-	Player::Player(unsigned int x, unsigned int y):
-		Character{x, y, "player"}
+	Player::Player():
+		Character{0, 0, "player"}
     { }
 
     Player::~Player() {

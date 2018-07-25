@@ -7,6 +7,11 @@
 #include "tile.hh"
 
 namespace Level {
+    struct Position {
+        unsigned int x;
+        unsigned int y;
+    };
+
     struct Portal {
         unsigned int sourceX;
         unsigned int sourceY;
@@ -33,6 +38,10 @@ namespace Level {
             const std::vector<std::shared_ptr<Tile>>& tiles() const;
             std::vector<std::shared_ptr<Tile>>& tiles();
 
+            bool hasPlayerSpawn() const;
+            void setPlayerSpawn(const Position& Position);
+            const Position& playerSpawn() const { return playerSpawn_; }
+
             // TODO: should we make a generic object class and inherit portal from it?
             // A new method could be created: objectAt which would return ptr to the object.
             // We could also restrict number of objects per tile to one.
@@ -48,6 +57,8 @@ namespace Level {
             std::string name_;
             unsigned int width_;
             unsigned int height_;
+
+            Position playerSpawn_;
     };
 }
 

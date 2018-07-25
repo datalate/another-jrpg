@@ -73,6 +73,14 @@ namespace Level {
         return tiles_;
     }
 
+    bool Map::hasPlayerSpawn() const {
+        return (playerSpawn_.x != 0 && playerSpawn_.y != 0);
+    }
+
+    void Map::setPlayerSpawn(const Position& Position) {
+        playerSpawn_ = Position;
+    }
+
     std::shared_ptr<Portal> Map::portalAt(unsigned int x, unsigned int y) {
         for (auto& portal: portals_) {
             if (portal->sourceX == x && portal->sourceY == y) {

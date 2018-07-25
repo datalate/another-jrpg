@@ -5,3 +5,6 @@ tiles: [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
 portals:
     - {sourceX: 1, sourceY: 0, destMap: "level1", destX: 1, destY: 18}
     - {sourceX: 10, sourceY: 0, destMap: "level1", destX: 10, destY: 18}
+spawn:
+    x: 2
+    y: 4

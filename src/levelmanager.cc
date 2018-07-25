@@ -8,6 +8,7 @@ namespace fs = std::filesystem;
 
 namespace YAML {
     using Level::Portal;
+    using Level::Position;
 
     // Conversions for portal between internal and external (level file) format
 	template<>
@@ -34,6 +35,29 @@ namespace YAML {
             rhs.destX = node["destX"].as<unsigned int>();
             rhs.destY = node["destY"].as<unsigned int>();
             rhs.destMap = node["destMap"].as<std::string>();
+
+            return true;
+        }
+    };
+
+	template<>
+    struct convert<Position> {
+		static Node encode(const Position& rhs) {
+			Node node;
+
+            node["x"] = rhs.y;
+            node["y"] = rhs.x;
+
+			return node;
+		}
+
+        static bool decode(const Node& node, Position& rhs) {
+            if (!node.IsMap() || node.size() != 2) {
+                return false;
+            }
+
+            rhs.x = node["x"].as<unsigned int>();
+            rhs.y = node["y"].as<unsigned int>();
 
             return true;
         }
@@ -136,6 +160,10 @@ namespace Level {
                 Portal newPortal = it->as<Portal>();
                 map->addPortal(newPortal);
             }
+        }
+
+        if (node["spawn"]) {
+            map->setPlayerSpawn(node["spawn"].as<Position>());
         }
 
         std::cout << "Loaded level: " << file << std::endl;

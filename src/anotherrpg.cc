@@ -1,13 +1,15 @@
 #include "anotherrpg.hh"
 #include <iostream>
 #include <SDL.h>
+#include "map.hh"
 
 using Window::MainWindow;
 using Character::Player;
+using Level::Position;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}, player_{std::make_shared<Player>(1, 1)}, currentMap_{nullptr} {
+        win_{window}, player_{std::make_shared<Player>()}, currentMap_{nullptr} {
 
         std::cout << "Game created" << std::endl;
     }
@@ -89,6 +91,11 @@ namespace Game {
                 win_.addRenderable(tile);
             }
             win_.addRenderable(player_);
+
+            if (currentMap_->hasPlayerSpawn()) {
+                const Position& spawn{currentMap_->playerSpawn()};
+                player_->moveTo(spawn.x, spawn.y);
+            }
 
             std::cout << "initMap(\"" << map << "\")" << std::endl;
             return true;
