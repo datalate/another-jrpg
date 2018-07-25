@@ -15,6 +15,7 @@ namespace Level {
 
         tiles_.clear();
         portals_.clear();
+        npcs_.clear();
 
         for (unsigned int y{0}; y < h; ++y) {
             for (unsigned int x{0}; x < w; ++x) {
@@ -39,7 +40,7 @@ namespace Level {
     }
 
     bool Map::good() const {
-        return (width() > 0 && height() > 0 && !tiles_.empty());
+        return width() > 0 && height() > 0 && !tiles_.empty();
     }
 
     void Map::dump() const {
@@ -73,7 +74,7 @@ namespace Level {
     }
 
     bool Map::hasPlayerSpawn() const {
-        return (playerSpawn_.x != 0 && playerSpawn_.y != 0);
+        return playerSpawn_.x != 0 && playerSpawn_.y != 0;
     }
 
     void Map::setPlayerSpawn(const Position& Position) {

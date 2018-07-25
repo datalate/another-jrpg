@@ -164,12 +164,19 @@ namespace Level {
             }
         }
 
-        if (node["spawn"]) {
-            map->setPlayerSpawn(node["spawn"].as<Position>());
+        if (node["spawnPoint"]) {
+            map->setPlayerSpawn(node["spawnPoint"].as<Position>());
         }
 
         std::vector<std::shared_ptr<Npc>> npcs;
-        npcs.push_back(std::make_shared<Npc>(5, 5));
+        if (node["npcs"]) {
+            YAML::Node npcsNode = node["npcs"];
+            for (YAML::const_iterator it = npcsNode.begin(); it != npcsNode.end(); ++it) {
+                const Position& npcPos = it->as<Position>(); // TODO: change to npc type
+                npcs.push_back(std::make_shared<Npc>(npcPos.x, npcPos.y));
+            }
+        }
+
         map->setNpcs(npcs);
 
         std::cout << "Loaded level: " << file << std::endl;
