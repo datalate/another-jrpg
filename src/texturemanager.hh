@@ -8,6 +8,8 @@
 #include "renderable.hh"
 
 namespace Window {
+    typedef std::shared_ptr<SDL_Texture> texturePtr;
+
 	class TextureManager {
 		public:
 			TextureManager();
@@ -16,17 +18,17 @@ namespace Window {
 			TextureManager(const TextureManager&) = delete; // disable copy
 			void operator=(const TextureManager&) = delete; // disable assign
 
-			std::shared_ptr<SDL_Texture> textureOf(const Renderable& object,
-												   const std::shared_ptr<SDL_Renderer>& rendr);
-			std::shared_ptr<SDL_Texture> placeholder(int width, int height,
-													 const std::shared_ptr<SDL_Renderer>& rendr) const;
+			texturePtr textureOf(const Renderable& object,
+								 const std::shared_ptr<SDL_Renderer>& rendr);
+			texturePtr placeholder(unsigned int width, unsigned int height,
+								   const std::shared_ptr<SDL_Renderer>& rendr) const;
 
 		private:
-			std::shared_ptr<SDL_Texture> loadFromFile(const std::string& path,
-											          const std::shared_ptr<SDL_Renderer>& rendr) const;
+			texturePtr loadFromFile(const std::string& path,
+								    const std::shared_ptr<SDL_Renderer>& rendr) const;
 
             // has ownership, texture id as key
-			std::unordered_map<std::string, std::shared_ptr<SDL_Texture>> textures_;
+			std::unordered_map<std::string, texturePtr> textures_;
 	};
 }
 

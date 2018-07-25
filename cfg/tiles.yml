@@ -1,0 +1,3 @@
+- {id: 0,  solid: false, texture: "ground"}
+- {id: 1,  solid: true,  texture: "wall"}
+

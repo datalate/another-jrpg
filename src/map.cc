@@ -17,10 +17,10 @@ namespace Level {
         for (unsigned int y{0}; y < h; ++y) {
             for (unsigned int x{0}; x < w; ++x) {
 				if (x == 0 || y == 0 || x == w - 1 || y == h - 1) {
-                    tiles_.push_back(std::make_shared<Tile>(x, y, "wall"));
+                    tiles_.push_back(std::make_shared<Tile>(x, y, "wall", true));
 				}
 				else {
-                    tiles_.push_back(std::make_shared<Tile>(x, y, "ground"));
+                    tiles_.push_back(std::make_shared<Tile>(x, y, "ground", false));
 				}
             }
         }

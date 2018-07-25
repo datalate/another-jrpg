@@ -10,17 +10,17 @@ namespace Level {
 
     class Tile : public Renderable {
         public:
-            Tile(unsigned int x, unsigned int y, const std::string& typeID);
+            Tile(unsigned int x, unsigned int y, const std::string& textureName, bool solid);
             ~Tile();
 
             unsigned int x() const { return x_; }
             unsigned int y() const { return y_; }
-            const std::string& typeId() const { return typeId_; }
+            bool solid() const { return solid_; }
 
         private:
             unsigned int x_;
             unsigned int y_;
-            std::string typeId_;
+            bool solid_;
     };
 }
 

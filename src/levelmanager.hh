@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <memory>
 #include "map.hh"
+#include "tilemanager.hh"
 
 namespace Level {
     class LevelManager {
@@ -24,6 +25,8 @@ namespace Level {
             
             // has ownership, map name as key
             std::unordered_map<std::string, std::shared_ptr<Map>> maps_;
+
+            TileManager tileConf_;
     };
 }
 

@@ -46,6 +46,8 @@ namespace Level {
         testMap->load();
         maps_.insert({"test", testMap});
         writeMap("test");*/
+
+        tileConf_.loadTileConfig("cfg/tiles.yml");
     }
 
     void LevelManager::loadFolder(const std::string& dir) {
@@ -88,13 +90,13 @@ namespace Level {
         std::string name;
         unsigned int width{0};
         unsigned int height{0};
-        std::vector<std::string> tileData;
+        std::vector<unsigned int> tileData;
        
         try {
             name = node["name"].as<std::string>();
             width = node["width"].as<int>();
             height = node["height"].as<int>();
-            tileData = node["tiles"].as<std::vector<std::string>>();
+            tileData = node["tiles"].as<std::vector<unsigned int>>();
         } catch (const YAML::RepresentationException &e) {
             std::cout << "Key attributes missing in level '" << file << "': " << e.what() << std::endl;
             ok = false;
@@ -112,7 +114,8 @@ namespace Level {
         unsigned int y{0};
 
         for (const auto& tile: tileData) {
-            tiles.push_back(std::make_shared<Tile>(x, y, tile));
+            const TileInfo& info = tileConf_[tile];
+            tiles.push_back(std::make_shared<Tile>(x, y, info.texture, info.solid));
             ++x;
 
             if (x == width) {

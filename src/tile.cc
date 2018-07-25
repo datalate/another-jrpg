@@ -2,8 +2,8 @@
 #include <iostream>
 
 namespace Level {
-    Tile::Tile(unsigned int x, unsigned int y, const std::string& typeId):
-        Renderable{x * TILE_WIDTH, y * TILE_HEIGHT, typeId}, x_{x}, y_{y}, typeId_{typeId} {
+    Tile::Tile(unsigned int x, unsigned int y, const std::string& textureName, bool solid):
+        Renderable{x * TILE_WIDTH, y * TILE_HEIGHT, textureName}, x_{x}, y_{y}, solid_{solid} {
 
         //std::cout << "Tile created at: (" << x_ << ", " << y_ << "): " << typeId_ << std::endl;
     }
