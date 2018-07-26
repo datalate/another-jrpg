@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -21,23 +21,29 @@
   <ItemGroup>
     <ClCompile Include="src\anotherrpg.cc" />
     <ClCompile Include="src\character.cc" />
+    <ClCompile Include="src\levelmanager.cc" />
     <ClCompile Include="src\main.cc" />
     <ClCompile Include="src\mainwindow.cc" />
     <ClCompile Include="src\map.cc" />
+    <ClCompile Include="src\npc.cc" />
     <ClCompile Include="src\player.cc" />
     <ClCompile Include="src\renderable.cc" />
     <ClCompile Include="src\texturemanager.cc" />
     <ClCompile Include="src\tile.cc" />
+    <ClCompile Include="src\tilemanager.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\anotherrpg.hh" />
     <ClInclude Include="src\character.hh" />
+    <ClInclude Include="src\levelmanager.hh" />
     <ClInclude Include="src\mainwindow.hh" />
     <ClInclude Include="src\map.hh" />
+    <ClInclude Include="src\npc.hh" />
     <ClInclude Include="src\player.hh" />
     <ClInclude Include="src\renderable.hh" />
     <ClInclude Include="src\texturemanager.hh" />
     <ClInclude Include="src\tile.hh" />
+    <ClInclude Include="src\tilemanager.hh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A8F1A6A-A045-4412-B78B-0187FAF0FCB2}</ProjectGuid>
@@ -49,26 +55,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -119,17 +125,18 @@
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\include;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\include;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\include;$(ProjectDir)\3rdparty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64;(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64;$(ProjectDir)\3rdparty\yaml-cpp\lib\x64;(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;libyaml-cppmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /dy "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
@@ -156,7 +163,7 @@ echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"</Command>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level2</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
@@ -164,20 +171,23 @@ echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"</Command>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>false</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\include;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\include;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\include;$(ProjectDir)\3rdparty\yaml-cpp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64;(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64;$(ProjectDir)\3rdparty\yaml-cpp\lib\x64;(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;libyaml-cppmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /dy "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"
 xcopy /dy "$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64\*.dll" "$(TargetDir)"
-echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"</Command>
+echo d | xcopy /edy "$(ProjectDir)\img" "$(TargetDir)\img"
+echo d | xcopy /edy "$(ProjectDir)\lev" "$(TargetDir)\lev"
+echo d | xcopy /edy "$(ProjectDir)\cfg" "$(TargetDir)\cfg"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
