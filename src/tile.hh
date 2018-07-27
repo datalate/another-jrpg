@@ -9,18 +9,18 @@ namespace Level {
     static const unsigned int TILE_HEIGHT{32};
 
     class Tile : public Renderable {
-        public:
-            Tile(unsigned int x, unsigned int y, const std::string& textureName, bool solid);
-            ~Tile();
+    public:
+        Tile(unsigned int x, unsigned int y, const std::string& textureName, bool solid);
+        ~Tile();
 
-            unsigned int x() const { return x_; }
-            unsigned int y() const { return y_; }
-            bool solid() const { return solid_; }
+        unsigned int x() const { return x_; }
+        unsigned int y() const { return y_; }
+        bool solid() const { return solid_; }
 
-        private:
-            unsigned int x_;
-            unsigned int y_;
-            bool solid_;
+    private:
+        unsigned int x_;
+        unsigned int y_;
+        bool solid_;
     };
 }
 

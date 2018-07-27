@@ -5,12 +5,12 @@
 
 namespace Character {
 	class Npc : public Character {
-	    public:
-		    Npc(unsigned int x, unsigned int y);
-		    ~Npc();
+	public:
+		Npc(unsigned int x, unsigned int y);
+		~Npc();
 
-            Npc(const Npc&) = delete; // disable copy
-            void operator=(const Npc&) = delete; // disable assign
+        Npc(const Npc&) = delete; // disable copy
+        void operator=(const Npc&) = delete; // disable assign
 	};
 }
 

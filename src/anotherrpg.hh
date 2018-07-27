@@ -9,23 +9,23 @@
 
 namespace Game {
     class AnotherRpg {
-        public:
-            explicit AnotherRpg(Window::MainWindow& win);
+    public:
+        explicit AnotherRpg(Window::MainWindow& win);
 
-            AnotherRpg(const AnotherRpg&) = delete; // disable copy
-            void operator=(const AnotherRpg&) = delete; // disable assign
+        AnotherRpg(const AnotherRpg&) = delete; // disable copy
+        void operator=(const AnotherRpg&) = delete; // disable assign
             
-            void run();
+        void run();
         
-        private:
-            bool switchToMap(const std::string& map);
-            bool movePlayer(unsigned int x, unsigned int y);
+    private:
+        bool switchToMap(const std::string& map);
+        bool movePlayer(unsigned int x, unsigned int y);
 
-            Window::MainWindow& win_;
-            Level::LevelManager lvls_;
+        Window::MainWindow& win_;
+        Level::LevelManager lvls_;
 
-            std::shared_ptr<Character::Player> player_; // has ownership
-            std::shared_ptr<Level::Map> currentMap_; // no ownership
+        std::shared_ptr<Character::Player> player_; // has ownership
+        std::shared_ptr<Level::Map> currentMap_; // no ownership
     };
 }
 

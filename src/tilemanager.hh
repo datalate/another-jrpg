@@ -1,25 +1,25 @@
+#ifndef TILEMANAGER_HH
+#define TILEMANAGER_HH
+
 #include <string>
 #include <unordered_map>
+#include "yamlparser.hh"
 
 namespace Level {
-    struct TileInfo {
-        unsigned int id;
-        bool solid;
-        std::string texture;
-    };
-
     class TileManager {
-        public:
-            TileManager();
+    public:
+        TileManager();
 
-            TileManager(const TileManager&) = delete; // disable copy
-            void operator=(const TileManager&) = delete; // disable assign
+        TileManager(const TileManager&) = delete; // disable copy
+        void operator=(const TileManager&) = delete; // disable assign
 
-            void loadTileConfig(const std::string& path);
-            const TileInfo& operator[](unsigned int id) const;
+        bool loadTileConfig(const std::string& path);
+        const TileInfo& operator[](unsigned int id) const;
 
-        private:
-            // has ownership, tile id as key 
-            std::unordered_map<unsigned int, TileInfo> tileConfig_;
+    private:
+        // has ownership, tile id as key 
+        std::unordered_map<unsigned int, TileInfo> tileConfig_;
     };
 }
+
+#endif

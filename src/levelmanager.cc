@@ -3,68 +3,11 @@
 #include <iostream>
 #include <vector>
 #include <yaml-cpp/yaml.h>
+#include "yamlparser.hh"
 #include "npc.hh"
 
 namespace fs = std::filesystem;
 using Character::Npc;
-
-namespace YAML {
-    using Level::Portal;
-    using Level::Position;
-
-    // Conversions for portal between internal and external (level file) format
-	template<>
-    struct convert<Portal> {
-		static Node encode(const Portal& rhs) {
-			Node node;
-
-            node["sourceX"] = rhs.sourceX;
-            node["sourceY"] = rhs.sourceY;
-            node["destX"] = rhs.destX;
-            node["destY"] = rhs.destY;
-            node["destMap"] = rhs.destMap;;
-
-			return node;
-		}
-
-        static bool decode(const Node& node, Portal& rhs) {
-            if (!node.IsMap() || node.size() != 5) {
-                return false;
-            }
-
-            rhs.sourceX = node["sourceX"].as<unsigned int>();
-            rhs.sourceY = node["sourceY"].as<unsigned int>();
-            rhs.destX = node["destX"].as<unsigned int>();
-            rhs.destY = node["destY"].as<unsigned int>();
-            rhs.destMap = node["destMap"].as<std::string>();
-
-            return true;
-        }
-    };
-
-	template<>
-    struct convert<Position> {
-		static Node encode(const Position& rhs) {
-			Node node;
-
-            node["x"] = rhs.y;
-            node["y"] = rhs.x;
-
-			return node;
-		}
-
-        static bool decode(const Node& node, Position& rhs) {
-            if (!node.IsMap() || node.size() != 2) {
-                return false;
-            }
-
-            rhs.x = node["x"].as<unsigned int>();
-            rhs.y = node["y"].as<unsigned int>();
-
-            return true;
-        }
-    };
-}
 
 namespace Level {
     LevelManager::LevelManager() {
@@ -102,86 +45,98 @@ namespace Level {
     // This probably needs to get splitted to multiple methods later on
     std::shared_ptr<Map> LevelManager::loadFile(const std::string& file) { 
         bool ok{true};
+        std::string errorMsg;
+        std::shared_ptr<Map> map{nullptr};
+
+        std::cout << "Loading level: " << file << "... ";
+
         YAML::Node node;
-
-        try {
-            node = YAML::LoadFile(file);
-        } catch (const YAML::Exception &e) {
-            std::cout << "Failed to parse level '" << file << "': " << e.what() << std::endl;
+        if (!YamlParser::loadFile(file, node)) {
+            errorMsg = "Failed to open/parse file";
             ok = false;
         }
-        
-        if (!ok) return nullptr;
+        else {
+            std::string name;
+            unsigned int width{0};
+            unsigned int height{0};
+            std::vector<unsigned int> tileData;
 
-        std::string name;
-        unsigned int width{0};
-        unsigned int height{0};
-        std::vector<unsigned int> tileData;
-       
-        try {
-            name = node["name"].as<std::string>();
-            width = node["width"].as<int>();
-            height = node["height"].as<int>();
-            tileData = node["tiles"].as<std::vector<unsigned int>>();
-        } catch (const YAML::RepresentationException &e) {
-            std::cout << "Key attributes missing in level '" << file << "': " << e.what() << std::endl;
-            ok = false;
-        }
+            YamlParser::parse<std::string>(node["name"], name);
+            YamlParser::parse<unsigned int>(node["width"], width);
+            YamlParser::parse<unsigned int>(node["height"], height);
+            YamlParser::parse<std::vector<unsigned int>>(node["tiles"], tileData);
 
-        if (!ok) return nullptr;
-        
-        if (tileData.size() != width * height) {
-            std::cout << "Incorrect number of tiles in level '" << file << "'" << std::endl;
-            return nullptr;
-        }
+            if (name.empty() || width == 0 || height == 0 || tileData.empty()) {
+                errorMsg = "Key attributes missing";
+                ok = false;
+            }
+            else if (tileData.size() != width * height) {
+                errorMsg = "Incorrect number of tiles";
+                ok = false;
+            }
+            else {
+                std::vector<std::shared_ptr<Tile>> tiles;
+                unsigned int x{0};
+                unsigned int y{0};
 
-        std::vector<std::shared_ptr<Tile>> tiles;
-        unsigned int x{0};
-        unsigned int y{0};
+                for (const auto& tile : tileData) {
+                    const TileInfo& info = tileConf_[tile];
+                    tiles.push_back(std::make_shared<Tile>(x, y, info.texture, info.solid));
+                    ++x;
 
-        for (const auto& tile: tileData) {
-            const TileInfo& info = tileConf_[tile];
-            tiles.push_back(std::make_shared<Tile>(x, y, info.texture, info.solid));
-            ++x;
+                    if (x == width) {
+                        x -= width;
+                        ++y;
+                    }
+                }
 
-            if (x == width) {
-                x -= width;
-                ++y;
+                map = std::make_shared<Map>(name);
+                map->setTiles(width, height, tiles);
+
+                // Rest of the data is optional
+
+                if (node["portals"]) {
+                    YAML::Node portalsNode = node["portals"];
+                    for (YAML::const_iterator it = portalsNode.begin(); it != portalsNode.end(); ++it) {
+                        Portal newPortal;
+                        if (YamlParser::parse<Portal>(*it, newPortal)) {
+                            map->addPortal(newPortal);
+                        }
+                    }
+                }
+
+                if (node["spawnPoint"]) {
+                    Position spawnPoint;
+                    if (YamlParser::parse<Position>(node["spawnPoint"], spawnPoint)) {
+                        map->setPlayerSpawn(spawnPoint);
+                    }
+                }
+
+                if (node["npcs"]) {
+                    std::vector<std::shared_ptr<Npc>> npcs;
+                    YAML::Node npcsNode = node["npcs"];
+
+                    for (YAML::const_iterator it = npcsNode.begin(); it != npcsNode.end(); ++it) {
+                        // TODO: change to npc type later on
+                        Position npcPos;
+                        if (YamlParser::parse<Position>(*it, npcPos)) {
+                            npcs.push_back(std::make_shared<Npc>(npcPos.x, npcPos.y));
+                        }
+                    }
+
+                    map->setNpcs(npcs);
+                }
             }
         }
 
-        std::shared_ptr<Map> map(std::make_shared<Map>(name));
-        map->setTiles(width, height, tiles);
-        
-        if (node["portals"]) {
-            YAML::Node portalsNode = node["portals"];
-
-            // TODO: exception handling
-            // A generic getter for required/optional parameters would be nice
-            for (YAML::const_iterator it = portalsNode.begin(); it != portalsNode.end(); ++it) {
-                Portal newPortal = it->as<Portal>();
-                map->addPortal(newPortal);
-            }
+        if (!ok) {
+            std::cout << "ERROR" << std::endl << errorMsg << std::endl;
+        }
+        else {
+            std::cout << "OK" << std::endl;
         }
 
-        if (node["spawnPoint"]) {
-            map->setPlayerSpawn(node["spawnPoint"].as<Position>());
-        }
-
-        std::vector<std::shared_ptr<Npc>> npcs;
-        if (node["npcs"]) {
-            YAML::Node npcsNode = node["npcs"];
-            for (YAML::const_iterator it = npcsNode.begin(); it != npcsNode.end(); ++it) {
-                const Position& npcPos = it->as<Position>(); // TODO: change to npc type
-                npcs.push_back(std::make_shared<Npc>(npcPos.x, npcPos.y));
-            }
-        }
-
-        map->setNpcs(npcs);
-
-        std::cout << "Loaded level: " << file << std::endl;
-
-        return map;
+        return map; // nullptr if bad
     }
 
     // Dumps level as YAML-format to stdout

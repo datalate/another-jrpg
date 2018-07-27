@@ -86,5 +86,8 @@
     <ClInclude Include="src\npc.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\yamlparser.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

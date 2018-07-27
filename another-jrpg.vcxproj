@@ -44,6 +44,7 @@
     <ClInclude Include="src\texturemanager.hh" />
     <ClInclude Include="src\tile.hh" />
     <ClInclude Include="src\tilemanager.hh" />
+    <ClInclude Include="src\yamlparser.hh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5A8F1A6A-A045-4412-B78B-0187FAF0FCB2}</ProjectGuid>

@@ -5,14 +5,14 @@
 
 namespace Character {
 	class Player : public Character {
-	    public:
-		    Player();
-		    ~Player();
+	public:
+		Player();
+		~Player();
 
-            Player(const Player&) = delete; // disable copy
-            void operator=(const Player&) = delete; // disable assign
+        Player(const Player&) = delete; // disable copy
+        void operator=(const Player&) = delete; // disable assign
 
-            void moveTo(unsigned int x, unsigned int y) override;
+        void moveTo(unsigned int x, unsigned int y) override;
 	};
 }
 
