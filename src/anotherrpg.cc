@@ -9,7 +9,7 @@ using Level::Position;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}, player_{std::make_shared<Player>()}, currentMap_{nullptr} {
+        win_{window}, player_{std::make_shared<Player>()}, currentMap_{nullptr}, eventCooldown_{false} {
 
         std::cout << "Game created" << std::endl;
     }
@@ -25,7 +25,7 @@ namespace Game {
 
         SDL_Event e;
         while (!quit) {
-            while (SDL_PollEvent(&e) != 0) { // move to input class
+            while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
                     quit = true;
                 }
@@ -37,46 +37,43 @@ namespace Game {
                         win_.update();
                     }
                 }
-                else if (e.type == SDL_KEYDOWN) { // testing
-                    switch (e.key.keysym.sym) {
-                    case SDLK_w: {
-                        const unsigned int x{player_->x()};
-                        const unsigned int y{player_->y() - 1};
-                        movePlayer(x, y);
-
-                        break;
-                    }
-                    case SDLK_s: {
-                        const unsigned int x{player_->x()};
-                        const unsigned int y{player_->y() + 1};
-                        movePlayer(x, y);
-
-                        break;
-                    }
-                    case SDLK_a: {
-                        const unsigned int x{player_->x() - 1};
-                        const unsigned int y{player_->y()};
-                        movePlayer(x, y);
-
-                        break;
-                    }
-                    case SDLK_d: {
-                        const unsigned int x{player_->x() + 1};
-                        const unsigned int y{player_->y()};
-                        movePlayer(x, y);
-
-                        break;
-                    }
-
-                    default: {}
-                    }
-
-                    // TODO: only update when necessary
-
-                    // Window is not updated on every frame
-                    win_.render();
-                    win_.update();
+                else {
+                    // SDL_QUIT and SDL_WINDOWEVENT are not needed for updating input
+                    input_.update(e);
                 }
+            }
+
+            // TODO: move to another method
+            if (input_.isKeyPressed()) {
+                // TODO: check if player moves
+                unsigned int x{player_->x()};
+                unsigned int y{player_->y()};
+
+                switch (input_.keyPressed()) {
+                case Key::MoveUp: {
+                    --y;
+                    break;
+                }
+                case Key::MoveDown: {
+                    ++y;
+                    break;
+                }
+                case Key::MoveLeft: {
+                    --x;
+                    break;
+                }
+                case Key::MoveRight: {
+                    ++x;
+                    break;
+                }
+                default: break;
+                }
+
+                movePlayer(x, y);
+
+                // Update window only when player moves
+                win_.render();
+                win_.update();
             }
             
             SDL_Delay(10); // ~100 frames per second
@@ -111,7 +108,7 @@ namespace Game {
     }
 
     bool AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
-        if (currentMap_->canMove(x, y)) {
+        if (!eventCooldown_ && currentMap_->canMove(x, y)) {
             player_->moveTo(x, y);
 
             auto portal = currentMap_->portalAt(x, y);
@@ -121,6 +118,11 @@ namespace Game {
 
                 player_->moveTo(portal->destX, portal->destY);
             }
+
+            // Quick hack to slow down movement ;)
+            eventCooldown_ = true;
+            static const unsigned int coolDown = 125;
+            SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
 
             return true;
         }

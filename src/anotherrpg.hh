@@ -6,6 +6,7 @@
 #include "map.hh"
 #include "player.hh"
 #include "levelmanager.hh"
+#include "input.hh"
 
 namespace Game {
     class AnotherRpg {
@@ -23,9 +24,12 @@ namespace Game {
 
         Window::MainWindow& win_;
         Level::LevelManager lvls_;
+        Input input_;
 
         std::shared_ptr<Character::Player> player_; // has ownership
         std::shared_ptr<Level::Map> currentMap_; // no ownership
+
+        bool eventCooldown_{false};
     };
 }
 

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\anotherrpg.cc" />
     <ClCompile Include="src\character.cc" />
+    <ClCompile Include="src\input.cc" />
     <ClCompile Include="src\levelmanager.cc" />
     <ClCompile Include="src\main.cc" />
     <ClCompile Include="src\mainwindow.cc" />
@@ -35,6 +36,7 @@
   <ItemGroup>
     <ClInclude Include="src\anotherrpg.hh" />
     <ClInclude Include="src\character.hh" />
+    <ClInclude Include="src\input.hh" />
     <ClInclude Include="src\levelmanager.hh" />
     <ClInclude Include="src\mainwindow.hh" />
     <ClInclude Include="src\map.hh" />
