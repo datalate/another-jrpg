@@ -15,9 +15,9 @@ namespace Game {
 
         AnotherRpg(const AnotherRpg&) = delete; // disable copy
         void operator=(const AnotherRpg&) = delete; // disable assign
-            
+
         void run();
-        
+
     private:
         bool switchToMap(const std::string& map);
         bool movePlayer(unsigned int x, unsigned int y);

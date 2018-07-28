@@ -75,7 +75,7 @@ namespace Game {
                 win_.render();
                 win_.update();
             }
-            
+
             SDL_Delay(10); // ~100 frames per second
         }
     }
@@ -121,7 +121,7 @@ namespace Game {
 
             // Quick hack to slow down movement ;)
             eventCooldown_ = true;
-            static const unsigned int coolDown = 125;
+            static const unsigned int coolDown{125}; // milliseconds
             SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
 
             return true;

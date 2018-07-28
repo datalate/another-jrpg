@@ -12,7 +12,7 @@ namespace Window {
         renderer_ = nullptr;
         window_.reset(SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                        width, height, SDL_WINDOW_SHOWN));
-        
+
         if (window_ == nullptr) {
             success = false;
         }

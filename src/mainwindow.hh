@@ -24,7 +24,7 @@ namespace Window {
 
         void addRenderable(const std::shared_ptr<Renderable>& renderable);
         void clearRenderables();
-    
+
     private:
         std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> window_;
         std::shared_ptr<SDL_Renderer> renderer_; // has ownership
