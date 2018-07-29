@@ -18,7 +18,7 @@ namespace Game {
     class Input {
     public:
         Input();
-            
+
         void update(SDL_Event& event);
 
         const Key& keyPressed() const; // returns the "newest" key pressed

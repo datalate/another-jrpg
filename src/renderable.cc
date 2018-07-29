@@ -1,5 +1,7 @@
 #include "renderable.hh"
 
+using Window::Texture;
+
 Renderable::Renderable(unsigned int renderX, unsigned int renderY, const std::string& textureName):
     textureName_{textureName}, texture_{nullptr} {
 
@@ -10,10 +12,10 @@ Renderable::Renderable(unsigned int renderX, unsigned int renderY, const std::st
 Renderable::~Renderable() {
 }
 
-void Renderable::setTexture(std::shared_ptr<SDL_Texture> texture, unsigned int width, unsigned int height) {
+void Renderable::setTexture(std::shared_ptr<Texture> texture) {
     texture_ = texture;
-    rect_.w = width;
-    rect_.h = height;
+    rect_.w = texture->textureWidth();
+    rect_.h = texture->textureHeight();
 }
 
 void Renderable::setRenderPos(unsigned int renderX, unsigned int renderY) {
@@ -21,7 +23,7 @@ void Renderable::setRenderPos(unsigned int renderX, unsigned int renderY) {
     rect_.y = renderY;
 }
 
-const std::shared_ptr<SDL_Texture>& Renderable::texture() const {
+const std::shared_ptr<Texture>& Renderable::texture() const {
     return texture_;
 }
 

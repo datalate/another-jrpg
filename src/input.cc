@@ -12,7 +12,7 @@ namespace Game {
 
     void Input::update(SDL_Event& event) {
         const Uint32& eventType{event.type};
-        
+
         if ((eventType == SDL_KEYDOWN || eventType == SDL_KEYUP) && event.key.repeat == 0) {
             const SDL_Keycode& keyCode{event.key.keysym.sym};
 

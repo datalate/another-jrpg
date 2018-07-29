@@ -47,18 +47,16 @@ namespace Window {
     void MainWindow::render() const {
         if (renderer_ != nullptr) {
             for (auto it = renderables_.cbegin(); it != renderables_.cend(); ++it) {
-                SDL_RenderCopy(renderer_.get(), (*it)->texture().get(), NULL, &(*it)->rect());
+                // TODO: get clip for characters
+                SDL_RenderCopy(renderer_.get(), (*it)->texture()->get(), NULL, &(*it)->rect());
             }
         }
     }
 
     void MainWindow::addRenderable(const std::shared_ptr<Renderable>& renderable) {
-		std::shared_ptr<SDL_Texture> texture = textures_.textureOf(*renderable.get(), renderer_);
-		int w{0};
-		int h{0};
-		SDL_QueryTexture(texture.get(), NULL, NULL, &w, &h);
+		auto texture = textures_.textureOf(*renderable.get(), renderer_);
 
-        renderable->setTexture(texture, w, h);
+        renderable->setTexture(texture);
         renderables_.push_back(renderable);
     }
 

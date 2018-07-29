@@ -3,17 +3,18 @@
 
 #include <memory>
 #include <string>
-#include "SDL_render.h"
+#include "SDL_rect.h"
+#include "texture.hh"
 
 class Renderable {
 public:
     Renderable(unsigned int renderX, unsigned int renderY, const std::string& textureName);
     virtual ~Renderable();
 
-    void setTexture(std::shared_ptr<SDL_Texture> texture, unsigned int width, unsigned int height);
+    void setTexture(std::shared_ptr<Window::Texture> texture);
 
     const std::string& textureName() const { return textureName_; }
-    const std::shared_ptr<SDL_Texture>& texture() const;
+    const std::shared_ptr<Window::Texture>& texture() const;
     const SDL_Rect& rect() const { return rect_; }
 
 protected:
@@ -21,7 +22,7 @@ protected:
 
 private:
     std::string textureName_;
-    std::shared_ptr<SDL_Texture> texture_; // no ownership
+    std::shared_ptr<Window::Texture> texture_; // no ownership
     SDL_Rect rect_; // render dimensions
 };
 

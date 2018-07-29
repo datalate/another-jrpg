@@ -54,6 +54,9 @@
     <ClCompile Include="src\input.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\texture.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\anotherrpg.hh">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\input.hh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texture.hh">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
