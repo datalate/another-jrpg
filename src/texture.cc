@@ -8,13 +8,4 @@ namespace Window {
         // Get dimensions
         SDL_QueryTexture(get(), NULL, NULL, &width_, &height_);
     }
-
-    Texture::~Texture() {
-        //std::cout << "Deleted texture" << std::endl;
-    }
-
-    /*Texture& Texture::operator=(texturePtr texture) {
-        texture_ = std::move(texture);
-        return *this;
-    }*/
 }

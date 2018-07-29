@@ -21,7 +21,8 @@ namespace Window {
 		if (it == textures_.end()) { // doesn't already exist
             texturePtr tex{loadFromFile("img/" + object.textureName() + ".png", rendr)};
 			if (tex == nullptr) { // use placeholder texture in case loading fails
-                tex = placeholder(32, 32, rendr);
+                // TODO: check if character?
+                tex = placeholder(object.width(), object.height(), rendr);
 			}
 
             auto newTexture{std::make_shared<Texture>(std::move(tex))};

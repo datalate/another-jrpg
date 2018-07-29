@@ -10,8 +10,7 @@ namespace Window {
     class Texture {
     public:
         Texture(texturePtr texture); // gets ownership of texture
-        ~Texture();
-        // Texture& operator=(texturePtr texture); // do we need something like this?
+        // Do we need texturePtr assignment operator?
 
         Texture(const Texture&) = delete; // disable copy
         void operator=(const Texture&) = delete; // disable assign
@@ -24,7 +23,6 @@ namespace Window {
     private:
         texturePtr texture_;
 
-        //SDL_Rect clip_; // offsets for texture, TODO
         int width_;
         int height_;
     };

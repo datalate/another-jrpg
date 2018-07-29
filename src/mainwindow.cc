@@ -47,8 +47,8 @@ namespace Window {
     void MainWindow::render() const {
         if (renderer_ != nullptr) {
             for (auto it = renderables_.cbegin(); it != renderables_.cend(); ++it) {
-                // TODO: get clip for characters
-                SDL_RenderCopy(renderer_.get(), (*it)->texture()->get(), NULL, &(*it)->rect());
+                auto const& texture{(*it)->texture()};
+                SDL_RenderCopy(renderer_.get(), texture->get(), (*it)->clip(), &(*it)->rect());
             }
         }
     }

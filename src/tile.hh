@@ -15,6 +15,9 @@ namespace Level {
 
         unsigned int x() const { return x_; }
         unsigned int y() const { return y_; }
+        virtual unsigned int width() const { return TILE_WIDTH; }
+        virtual unsigned int height() const { return TILE_HEIGHT; }
+
         bool solid() const { return solid_; }
 
     private:
