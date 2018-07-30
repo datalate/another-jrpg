@@ -7,6 +7,7 @@
 #include "player.hh"
 #include "levelmanager.hh"
 #include "input.hh"
+#include <random>
 
 namespace Game {
     class AnotherRpg {
@@ -29,7 +30,8 @@ namespace Game {
         std::shared_ptr<Character::Player> player_; // has ownership
         std::shared_ptr<Level::Map> currentMap_; // no ownership
 
-        bool eventCooldown_{false};
+        bool eventCooldown_;
+        std::mt19937 rand_;
     };
 }
 

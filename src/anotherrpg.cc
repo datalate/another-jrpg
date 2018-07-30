@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "map.hh"
+#include <ctime>
 
 using Window::MainWindow;
 using Character::Player;
@@ -10,6 +11,14 @@ using Level::Position;
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
         win_{window}, player_{std::make_shared<Player>()}, currentMap_{nullptr}, eventCooldown_{false} {
+
+        std::random_device r;
+        if (r.entropy() != 0) {
+            rand_.seed(r());
+        }
+        else {
+            rand_.seed((int)time(NULL));
+        }
 
         std::cout << "Game created" << std::endl;
     }
@@ -108,23 +117,33 @@ namespace Game {
     }
 
     bool AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
-        if (!eventCooldown_ && currentMap_->canMove(x, y)) {
-            player_->moveTo(x, y);
+        if (!eventCooldown_) {
+            if (currentMap_->canMove(x, y)) {
+                player_->moveTo(x, y);
 
-            auto portal = currentMap_->portalAt(x, y);
-            if (portal != nullptr) {
-                // Transition between maps
-                switchToMap(portal->destMap);
+                auto portal = currentMap_->portalAt(x, y);
+                if (portal != nullptr) {
+                    // Transition between maps
+                    switchToMap(portal->destMap);
 
-                player_->moveTo(portal->destX, portal->destY);
+                    player_->moveTo(portal->destX, portal->destY);
+                }
+
+                // Quick hack to slow down movement ;)
+                eventCooldown_ = true;
+                static const unsigned int coolDown{125}; // milliseconds
+                SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
+
+                /*std::uniform_int_distribution<int> d{0, 100};
+                std::cout << "random:" << d(rand_) << std::endl;*/
+
+                return true;
             }
+            else {
+                player_->facePosition(x, y);
 
-            // Quick hack to slow down movement ;)
-            eventCooldown_ = true;
-            static const unsigned int coolDown{125}; // milliseconds
-            SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
-
-            return true;
+                return false;
+            }
         }
         else {
             return false;

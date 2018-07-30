@@ -1,20 +1,28 @@
 #include "character.hh"
 #include <iostream>
+#include <cmath>
 
 namespace Character {
+    const std::vector<SDL_Rect*> CHARACTER_CLIPS{
+        new SDL_Rect{0, CHARACTER_HEIGHT * 0, CHARACTER_WIDTH, CHARACTER_HEIGHT},
+        new SDL_Rect{0, CHARACTER_HEIGHT * 1, CHARACTER_WIDTH, CHARACTER_HEIGHT},
+        new SDL_Rect{0, CHARACTER_HEIGHT * 2, CHARACTER_WIDTH, CHARACTER_HEIGHT},
+        new SDL_Rect{0, CHARACTER_HEIGHT * 3, CHARACTER_WIDTH, CHARACTER_HEIGHT}
+    };
+
 	Character::Character(unsigned int x, unsigned int y, const std::string& type):
         Renderable{x * CHARACTER_WIDTH, y * CHARACTER_HEIGHT, type},
         x_{x}, y_{y}, dirX_{0}, dirY_{1} {
 
-        // TODO: use const static clips for every character?
-        for (int i = 0; i < 4; ++i) {
+        // TODO: a loop like this can be used later for animations and such
+        /*for (int i = 0; i < 4; ++i) {
             SDL_Rect *clip = new SDL_Rect();
             clip->x = 0;
             clip->y = i * CHARACTER_HEIGHT;
             clip->w = CHARACTER_WIDTH;
             clip->h = CHARACTER_HEIGHT;
             clips_.push_back(clip);
-        }
+        }*/
 
         updateSprite();
     }
@@ -23,20 +31,21 @@ namespace Character {
     }
 
     void Character::moveTo(unsigned int x, unsigned int y) {
-        int oldDirX{dirX_};
-        int oldDirY{dirY_};
+        const int dx{(int)x - (int)x_};
+        const int dy{(int)y - (int)y_};
 
-        dirX_ = x - x_;
-        dirY_ = y - y_;
-
-        if (dirX_ != oldDirX || dirY_ != oldDirY) {
-            updateSprite();
+        if (dx * dy == 0 && (abs(dx) == 1 || abs(dy) == 1)) { // only moved one tile
+            updateDirection(dx, dy);
         }
 
         x_ = x;
         y_ = y;
 
         setRenderPos(x * CHARACTER_WIDTH, y * CHARACTER_HEIGHT);
+    }
+
+    void Character::facePosition(unsigned int x, unsigned int y) {
+        updateDirection(x - x_, y - y_);
     }
 
     Direction Character::direction() const {
@@ -54,7 +63,19 @@ namespace Character {
         }
     }
 
+    void Character::updateDirection(int dx, int dy) {
+        int oldDirX{dirX_};
+        int oldDirY{dirY_};
+
+        dirX_ = dx;
+        dirY_ = dy;
+
+        if (dirX_ != oldDirX || dirY_ != oldDirY) {
+            updateSprite();
+        }
+    }
+
     void Character::updateSprite() {
-        setTextureClip(clips_.at(direction()));
+        setTextureClip(CHARACTER_CLIPS.at(direction()));
     }
 }

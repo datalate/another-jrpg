@@ -9,6 +9,8 @@ namespace Character {
     static const unsigned int CHARACTER_WIDTH{32};
     static const unsigned int CHARACTER_HEIGHT{32};
 
+    extern const std::vector<SDL_Rect*> CHARACTER_CLIPS;
+
     enum Direction {
         Up = 0,
         Down,
@@ -22,6 +24,7 @@ namespace Character {
         virtual ~Character();
 
         virtual void moveTo(unsigned int x, unsigned int y);
+        void facePosition(unsigned int x, unsigned int y);
 
         unsigned int x() const { return x_; }
         unsigned int y() const { return y_; }
@@ -31,14 +34,13 @@ namespace Character {
         Direction direction() const;
 
     private:
+        void updateDirection(int dx, int dy);
         void updateSprite();
 
         unsigned int x_;
         unsigned int y_;
         int dirX_;
         int dirY_;
-
-        std::vector<SDL_Rect*> clips_;
     };
 }
 

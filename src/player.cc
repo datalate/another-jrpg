@@ -12,6 +12,6 @@ namespace Character {
     void Player::moveTo(unsigned int x, unsigned int y) {
         Character::moveTo(x, y);
 
-        std::cout << "Move player to: (" << x << ", " << y << ")" << std::endl;
+        //std::cout << "Move player to: (" << x << ", " << y << ")" << std::endl;
     }
 }
