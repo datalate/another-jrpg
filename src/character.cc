@@ -1,6 +1,10 @@
 #include "character.hh"
 #include <iostream>
 #include <cmath>
+#include <cassert>
+#include "map.hh"
+
+using Level::Position;
 
 namespace Character {
     const std::vector<SDL_Rect*> CHARACTER_CLIPS{
@@ -45,7 +49,20 @@ namespace Character {
     }
 
     void Character::facePosition(unsigned int x, unsigned int y) {
-        updateDirection(x - x_, y - y_);
+        const int dx{(int)x - (int)x_};
+        const int dy{(int)y - (int)y_};
+
+        int dirX{0};
+        int dirY{0};
+
+        if (dx != 0) {
+            dirX = dx / abs(dx);
+        }
+        else if (dy != 0) {
+            dirY = dy / abs(dy);
+        }
+
+        updateDirection(dirX, dirY);
     }
 
     Direction Character::direction() const {
@@ -63,12 +80,18 @@ namespace Character {
         }
     }
 
-    void Character::updateDirection(int dx, int dy) {
+    Position Character::facingPosition() const {
+        return {x_ + dirX_, y_ + dirY_};
+    }
+
+    void Character::updateDirection(int dirX, int dirY) {
+        assert(dirX * dirY == 0 && (abs(dirX) == 1 || abs(dirY) == 1));
+
         int oldDirX{dirX_};
         int oldDirY{dirY_};
 
-        dirX_ = dx;
-        dirY_ = dy;
+        dirX_ = dirX;
+        dirY_ = dirY;
 
         if (dirX_ != oldDirX || dirY_ != oldDirY) {
             updateSprite();

@@ -12,7 +12,8 @@ namespace Game {
         MoveUp = 0,
         MoveDown,
         MoveLeft,
-        MoveRight
+        MoveRight,
+        Interact
     };
 
     class Input {
@@ -23,6 +24,7 @@ namespace Game {
 
         const Key& keyPressed() const; // returns the "newest" key pressed
         bool isKeyPressed() const;
+        bool isMovement() const;
 
     private:
         std::unordered_map<SDL_Keycode, Key> keys_;

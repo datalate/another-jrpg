@@ -20,6 +20,7 @@ namespace Game {
         void run();
 
     private:
+        void handleInput();
         bool switchToMap(const std::string& map);
         bool movePlayer(unsigned int x, unsigned int y);
 

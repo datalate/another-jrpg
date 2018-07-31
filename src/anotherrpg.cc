@@ -52,8 +52,15 @@ namespace Game {
                 }
             }
 
-            // TODO: move to another method
-            if (input_.isKeyPressed()) {
+            handleInput();
+
+            SDL_Delay(10); // ~100 frames per second
+        }
+    }
+
+    void AnotherRpg::handleInput() {
+        if (input_.isKeyPressed() && !eventCooldown_) {
+            if (input_.isMovement()) {
                 // TODO: check if player moves
                 unsigned int x{player_->x()};
                 unsigned int y{player_->y()};
@@ -80,12 +87,24 @@ namespace Game {
 
                 movePlayer(x, y);
 
-                // Update window only when player moves
+                // Update window only when player moves (for now)
+                // TODO: create a var "dirty" to mark if render is needed
                 win_.render();
                 win_.update();
             }
+            else if (input_.keyPressed() == Key::Interact) {
+                Position pos = player_->facingPosition();
+                auto npc = currentMap_->npcAt(pos.x, pos.y);
+                if (npc) {
+                    // TODO
+                    std::cout << "Interact with: " << npc->textureName() << std::endl;
+                }
+            }
 
-            SDL_Delay(10); // ~100 frames per second
+            // Quick hack to slow down movement etc ;)
+            eventCooldown_ = true;
+            static const unsigned int coolDown{125}; // milliseconds
+            SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
         }
     }
 
@@ -117,35 +136,25 @@ namespace Game {
     }
 
     bool AnotherRpg::movePlayer(unsigned int x, unsigned int y) {
-        if (!eventCooldown_) {
-            if (currentMap_->canMove(x, y)) {
-                player_->moveTo(x, y);
+        if (currentMap_->canMove(x, y)) {
+            player_->moveTo(x, y);
 
-                auto portal = currentMap_->portalAt(x, y);
-                if (portal != nullptr) {
-                    // Transition between maps
-                    switchToMap(portal->destMap);
+            auto portal = currentMap_->portalAt(x, y);
+            if (portal != nullptr) {
+                // Transition between maps
+                switchToMap(portal->destMap);
 
-                    player_->moveTo(portal->destX, portal->destY);
-                }
-
-                // Quick hack to slow down movement ;)
-                eventCooldown_ = true;
-                static const unsigned int coolDown{125}; // milliseconds
-                SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
-
-                /*std::uniform_int_distribution<int> d{0, 100};
-                std::cout << "random:" << d(rand_) << std::endl;*/
-
-                return true;
+                player_->moveTo(portal->destX, portal->destY);
             }
-            else {
-                player_->facePosition(x, y);
 
-                return false;
-            }
+            /*std::uniform_int_distribution<int> d{0, 100};
+            std::cout << "random:" << d(rand_) << std::endl;*/
+
+            return true;
         }
         else {
+            player_->facePosition(x, y);
+
             return false;
         }
     }

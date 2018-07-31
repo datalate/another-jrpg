@@ -5,6 +5,10 @@
 #include <vector>
 #include "SDL_rect.h"
 
+namespace Level {
+    struct Position;
+}
+
 namespace Character {
     static const unsigned int CHARACTER_WIDTH{32};
     static const unsigned int CHARACTER_HEIGHT{32};
@@ -32,9 +36,10 @@ namespace Character {
         virtual unsigned int height() const { return CHARACTER_HEIGHT; }
 
         Direction direction() const;
+        Level::Position facingPosition() const;
 
     private:
-        void updateDirection(int dx, int dy);
+        void updateDirection(int dirX, int dirY); // valid values: other zero, other -1 or 1
         void updateSprite();
 
         unsigned int x_;

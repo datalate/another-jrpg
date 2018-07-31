@@ -8,6 +8,7 @@ namespace Game {
         keys_.insert({SDLK_s, MoveDown});
         keys_.insert({SDLK_a, MoveLeft});
         keys_.insert({SDLK_d, MoveRight});
+        keys_.insert({SDLK_f, Interact});
     }
 
     void Input::update(SDL_Event& event) {
@@ -41,5 +42,9 @@ namespace Game {
 
     bool Input::isKeyPressed() const {
         return !pressed_.empty();
+    }
+
+    bool Input::isMovement() const {
+        return isKeyPressed() && keyPressed() < Key::Interact;
     }
 }
