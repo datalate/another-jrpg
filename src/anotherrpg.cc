@@ -10,7 +10,9 @@ using Level::Position;
 
 namespace Game {
     AnotherRpg::AnotherRpg(MainWindow& window):
-        win_{window}, player_{std::make_shared<Player>()}, currentMap_{nullptr}, eventCooldown_{false} {
+        win_{window},
+        player_{std::make_shared<Player>()}, currentMap_{nullptr},
+        eventCooldown_{false} {
 
         std::random_device r;
         if (r.entropy() != 0) {
