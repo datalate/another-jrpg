@@ -5,6 +5,7 @@
 #include <yaml-cpp/yaml.h>
 #include "yamlparser.hh"
 #include "npc.hh"
+#include "types.hh"
 
 namespace fs = std::filesystem;
 using Character::Npc;

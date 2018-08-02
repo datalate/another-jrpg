@@ -6,21 +6,9 @@
 #include <string>
 #include "tile.hh"
 #include "npc.hh"
+#include "types.hh"
 
 namespace Level {
-    struct Position {
-        unsigned int x;
-        unsigned int y;
-    };
-
-    struct Portal {
-        unsigned int sourceX;
-        unsigned int sourceY;
-        unsigned int destX;
-        unsigned int destY;
-        std::string destMap;
-    };
-
     class Map {
     public:
         explicit Map(const std::string& name);

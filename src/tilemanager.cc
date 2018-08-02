@@ -27,4 +27,8 @@ namespace Level {
     const TileInfo& TileManager::operator[](unsigned int id) const {
         return tileConfig_.at(id);
     }
+
+    const std::unordered_map<unsigned int, TileInfo> TileManager::tileTypes() const {
+        return tileConfig_;
+    }
 }

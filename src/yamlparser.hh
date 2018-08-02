@@ -3,16 +3,8 @@
 
 #include <yaml-cpp/yaml.h>
 #include <string>
-#include "map.hh"
 #include <iostream>
-
-namespace Level {
-    struct TileInfo {
-        unsigned int id;
-        bool solid;
-        std::string texture;
-    };
-}
+#include "types.hh"
 
 namespace YAML {
     using Level::Portal;

@@ -4,10 +4,7 @@
 #include "renderable.hh"
 #include <vector>
 #include "SDL_rect.h"
-
-namespace Level {
-    struct Position;
-}
+#include "types.hh"
 
 namespace Character {
     static const unsigned int CHARACTER_WIDTH{32};

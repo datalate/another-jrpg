@@ -4,6 +4,7 @@
 #include <string>
 #include <unordered_map>
 #include "yamlparser.hh"
+#include "types.hh"
 
 namespace Level {
     class TileManager {
@@ -15,6 +16,7 @@ namespace Level {
 
         bool loadTileConfig(const std::string& path);
         const TileInfo& operator[](unsigned int id) const;
+        const std::unordered_map<unsigned int, TileInfo> tileTypes() const;
 
     private:
         // has ownership, tile id as key 

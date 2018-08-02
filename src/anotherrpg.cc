@@ -2,6 +2,7 @@
 #include <iostream>
 #include <SDL.h>
 #include "map.hh"
+#include "types.hh"
 #include <ctime>
 
 using Window::MainWindow;
