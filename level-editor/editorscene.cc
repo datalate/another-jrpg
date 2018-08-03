@@ -4,7 +4,8 @@
 
 EditorScene::EditorScene(unsigned int width, unsigned int height) :
     QGraphicsScene{},
-    width_{width}, height_{height} {
+    width_{width}, height_{height},
+    mousePressed_{false}, activeTile_{nullptr} {
 
     setSceneRect(0, 0, width * TILE_WIDTH, height * TILE_HEIGHT);
     setBackgroundBrush(QBrush(QColor(Qt::darkGray)));
@@ -74,14 +75,37 @@ void EditorScene::drawBackground(QPainter* painter, const QRectF& rect) {
     painter->drawLines(lines.data(), lines.size());
 }
 
-void EditorScene::mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) {
-    const int x{(int)(mouseEvent->scenePos().x() / 32)};
-    const int y{(int)(mouseEvent->scenePos().y() / 32)};
+void EditorScene::mousePressEvent(QGraphicsSceneMouseEvent* event) {
+    const int x{(int)(event->scenePos().x() / TILE_WIDTH)};
+    const int y{(int)(event->scenePos().y() / TILE_HEIGHT)};
 
-    if (mouseEvent->button() == Qt::LeftButton && tileExists(x, y)) {
+    if (event->button() == Qt::LeftButton && tileExists(x, y)) {
         TileItem* tile{tileAt(x, y)};
 
         if (tile != nullptr) {
+            activeTile_ = tile;
+            mousePressed_ = true;
+            emit tileClicked(tile);
+        }
+    }
+}
+
+void EditorScene::mouseReleaseEvent(QGraphicsSceneMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        activeTile_ = nullptr;
+        mousePressed_ = false;
+    }
+}
+
+void EditorScene::mouseMoveEvent(QGraphicsSceneMouseEvent* event) {
+    const int x{(int)(event->scenePos().x() / TILE_WIDTH)};
+    const int y{(int)(event->scenePos().y() / TILE_HEIGHT)};
+
+    if (mousePressed_ && tileExists(x, y)) {
+        TileItem* tile{tileAt(x, y)};
+
+        if (tile != nullptr && tile != activeTile_) {
+            activeTile_ = tile;
             emit tileClicked(tile);
         }
     }

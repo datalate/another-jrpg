@@ -7,11 +7,13 @@
 
 class TileItem : public QObject, public QGraphicsPixmapItem {
     Q_OBJECT
+
 public:
     TileItem(unsigned int x, unsigned int y, int id, QObject* parent = nullptr);
 
     void setHighlight(bool highlight);
     void setTileId(int id);
+    void setTilePosition(QPoint pos);
 
     unsigned int tileX() const { return x_; }
     unsigned int tileY() const { return y_; }

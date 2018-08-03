@@ -31,7 +31,8 @@ SOURCES += \
     mainwindow.cc \
     tileitem.cc \
     editorscene.cc \
-    tileselectorscene.cc
+    tileselectorscene.cc \
+    tileselectorview.cc
 
 HEADERS += \
     ../src/types.hh \
@@ -41,7 +42,8 @@ HEADERS += \
     tileitem.hh \
     editorscene.hh \
     tileselectorscene.hh \
-    common.hh
+    common.hh \
+    tileselectorview.hh
 
 FORMS += \
     mainwindow.ui

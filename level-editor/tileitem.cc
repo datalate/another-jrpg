@@ -18,6 +18,12 @@ void TileItem::setTileId(int id) {
     id_ = id;
 }
 
+void TileItem::setTilePosition(QPoint pos) {
+    x_ = pos.x();
+    y_ = pos.y();
+    setPos(x_ * TILE_WIDTH, y_ * TILE_HEIGHT);
+}
+
 void TileItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
     Q_UNUSED(event);
 

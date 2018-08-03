@@ -1,5 +1,6 @@
 #include "tileselectorscene.hh"
 #include <QDebug>
+#include "common.hh"
 
 using Level::TileInfo;
 
@@ -31,6 +32,26 @@ void TileSelectorScene::setTileSet(const std::unordered_map<unsigned int, TileIn
 
     //setSceneRect(0, 0, 2 * 32, 2 * 32);
     emit tileSelected(tileSet_.front()); // Default tile
+}
+
+void TileSelectorScene::rePositionItems(const QSize& oldSize, const QSize& size) {
+    Q_UNUSED(oldSize);
+
+    const int width{size.width() / (int)TILE_WIDTH};
+
+    int x{0};
+    int y{0};
+    for (auto const& tile: tileSet_) {
+        tile->setTilePosition({x, y});
+
+        ++x;
+        if (x == width) {
+            x -= width;
+            ++y;
+        }
+    }
+
+    setSceneRect(0, 0, width * TILE_WIDTH, y * TILE_HEIGHT);
 }
 
 void TileSelectorScene::onTileClicked(TileItem* tile) {

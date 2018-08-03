@@ -11,17 +11,17 @@
 
 class TileSelectorScene : public QGraphicsScene {
     Q_OBJECT
+
 public:
     TileSelectorScene();
 
     void setTileSet(const std::unordered_map<unsigned int, Level::TileInfo>& tileSet);
 
+public slots:
+    void rePositionItems(const QSize& oldSize, const QSize& size);
+
 signals:
     void tileSelected(TileItem*);
-
-protected:
-    //void drawBackground(QPainter* painter, const QRectF& rect);
-    //void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent);
 
 private slots:
     void onTileClicked(TileItem* tile);

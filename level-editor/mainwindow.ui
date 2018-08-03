@@ -28,7 +28,7 @@
       </property>
       <widget class="QGraphicsView" name="graphicsViewEditor">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -40,9 +40,9 @@
         <enum>Qt::ScrollBarAsNeeded</enum>
        </property>
       </widget>
-      <widget class="QGraphicsView" name="graphicsViewTiles">
+      <widget class="TileSelectorView" name="graphicsViewTiles">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -117,6 +117,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TileSelectorView</class>
+   <extends>QGraphicsView</extends>
+   <header>tileselectorview.hh</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

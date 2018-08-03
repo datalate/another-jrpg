@@ -9,6 +9,7 @@
 
 class EditorScene : public QGraphicsScene {
     Q_OBJECT
+
 public:
     EditorScene(unsigned int width, unsigned int height);
 
@@ -22,7 +23,9 @@ signals:
 
 protected:
     void drawBackground(QPainter* painter, const QRectF& rect) override;
-    void mousePressEvent(QGraphicsSceneMouseEvent* mouseEvent) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
 
 private:
     void clear();
@@ -30,6 +33,9 @@ private:
     std::vector<TileItem*> tiles_; // no ownership
     unsigned int width_;
     unsigned int height_;
+
+    bool mousePressed_;
+    TileItem* activeTile_;
 };
 
 #endif // GRIDSCENE_HH

@@ -20,12 +20,13 @@ MainWindow::MainWindow(QWidget* parent) :
     ui->graphicsViewTiles->setScene(&tileSelector_);
     //ui->graphicsViewTiles->setFixedSize(200, 660);
     ui->graphicsViewTiles->setAlignment(Qt::AlignTop | Qt::AlignLeft);
-
     //setFixedSize(1060, 720);
 
     bool success{connect(&editor_, &EditorScene::tileClicked, this, &MainWindow::updateTile)};
     Q_ASSERT(success);
     success = connect(&tileSelector_, &TileSelectorScene::tileSelected, this, &MainWindow::setActiveTile);
+    Q_ASSERT(success);
+    success = connect(ui->graphicsViewTiles, &TileSelectorView::sizeChanged, &tileSelector_, &TileSelectorScene::rePositionItems);
     Q_ASSERT(success);
 
     tiles_.loadTileConfig("../cfg/tiles.yml");
