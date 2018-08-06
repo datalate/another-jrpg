@@ -147,7 +147,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64;$(ProjectDir)\3rdparty\SDL2_image-2.0.3\lib\x64;$(ProjectDir)\3rdparty\yaml-cpp\lib\x64;(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;libyaml-cppmd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;libyaml-cppmdd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /dy "$(ProjectDir)\3rdparty\SDL2-2.0.8\lib\x64\*.dll" "$(TargetDir)"

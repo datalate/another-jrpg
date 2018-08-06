@@ -26,7 +26,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += \
-    ../src/tilemanager.cc \
+    $$PWD/../src/tilemanager.cc \
     main.cc \
     mainwindow.cc \
     tileitem.cc \
@@ -35,9 +35,9 @@ SOURCES += \
     tileselectorview.cc
 
 HEADERS += \
-    ../src/types.hh \
-    ../src/yamlparser.hh \
-    ../src/tilemanager.hh \
+    $$PWD/../src/types.hh \
+    $$PWD/../src/yamlparser.hh \
+    $$PWD/../src/tilemanager.hh \
     mainwindow.hh \
     tileitem.hh \
     editorscene.hh \
@@ -50,5 +50,11 @@ FORMS += \
 
 unix:!macx: LIBS += -L/usr/lib/ -lyaml-cpp
 
-INCLUDEPATH += ../3rdparty/yaml-cpp/include/yaml-cpp
-DEPENDPATH += ../3rdparty/yaml-cpp/include/yaml-cpp
+INCLUDEPATH += $$PWD/../3rdparty/yaml-cpp/include
+DEPENDPATH += $$PWD/../3rdparty/yaml-cpp/include
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../3rdparty/yaml-cpp/lib/x64/ -llibyaml-cppmd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../3rdparty/yaml-cpp/lib/x64/ -llibyaml-cppmdd
+
+else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../3rdparty/yaml-cpp/lib/x64/libyaml-cppmd.lib
+else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../3rdparty/yaml-cpp/lib/x64/libyaml-cppmdd.lib
