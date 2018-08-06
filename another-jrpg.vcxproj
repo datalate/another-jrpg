@@ -29,10 +29,13 @@
     <ClCompile Include="src\npc.cc" />
     <ClCompile Include="src\player.cc" />
     <ClCompile Include="src\renderable.cc" />
+    <ClCompile Include="src\state.cc" />
+    <ClCompile Include="src\statemanager.cc" />
     <ClCompile Include="src\texture.cc" />
     <ClCompile Include="src\texturemanager.cc" />
     <ClCompile Include="src\tile.cc" />
     <ClCompile Include="src\tilemanager.cc" />
+    <ClCompile Include="src\worldstate.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\anotherrpg.hh" />
@@ -44,10 +47,13 @@
     <ClInclude Include="src\npc.hh" />
     <ClInclude Include="src\player.hh" />
     <ClInclude Include="src\renderable.hh" />
+    <ClInclude Include="src\state.hh" />
+    <ClInclude Include="src\statemanager.hh" />
     <ClInclude Include="src\texture.hh" />
     <ClInclude Include="src\texturemanager.hh" />
     <ClInclude Include="src\tile.hh" />
     <ClInclude Include="src\tilemanager.hh" />
+    <ClInclude Include="src\worldstate.hh" />
     <ClInclude Include="src\yamlparser.hh" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
