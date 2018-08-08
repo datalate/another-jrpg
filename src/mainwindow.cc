@@ -44,24 +44,15 @@ namespace Window {
         }
     }
 
-    void MainWindow::render() const {
+    void MainWindow::render(std::vector<std::shared_ptr<Renderable>>& renderables) {
         if (renderer_ != nullptr) {
-            for (auto it = renderables_.cbegin(); it != renderables_.cend(); ++it) {
-                auto const& texture{(*it)->texture()};
-                SDL_RenderCopy(renderer_.get(), texture->get(), (*it)->clip(), &(*it)->rect());
+            for (auto it = renderables.cbegin(); it != renderables.cend(); ++it) {
+                if ((*it)->texture() == nullptr) { // add texture if it's not yet loaded
+                    (*it)->setTexture(textures_.textureOf(*(*it).get(), renderer_));
+                }
+                SDL_RenderCopy(renderer_.get(), (*it)->texture()->get(), (*it)->clip(), &(*it)->rect());
             }
         }
-    }
-
-    void MainWindow::addRenderable(const std::shared_ptr<Renderable>& renderable) {
-		auto texture = textures_.textureOf(*renderable.get(), renderer_);
-
-        renderable->setTexture(texture);
-        renderables_.push_back(renderable);
-    }
-
-    void MainWindow::clearRenderables() {
-        renderables_.clear();
     }
 }
 

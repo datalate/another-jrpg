@@ -2,6 +2,11 @@
 #define WORLDSTATE_HH
 
 #include "state.hh"
+#include <string>
+#include <memory>
+#include "levelmanager.hh"
+#include "map.hh"
+#include "player.hh"
 
 namespace Game {
     class AnotherRpg;
@@ -11,11 +16,22 @@ namespace Game {
         explicit WorldState(AnotherRpg& rpg);
         ~WorldState();
 
-        virtual void init();
+        virtual bool init();
         virtual void cleanup();
 
-        virtual void update();
-        virtual void draw();
+        virtual void update(const Input& input);
+        virtual void draw(Window::MainWindow& window);
+
+    private:
+        bool switchToMap(const std::string& map);
+        bool movePlayer(unsigned int x, unsigned int y);
+
+        Level::LevelManager lvls_;
+        std::shared_ptr<Level::Map> currentMap_; // no ownership
+
+        std::shared_ptr<Character::Player> player_; // has ownership
+
+        bool eventCooldown_;
     };
 }
 

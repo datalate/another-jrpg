@@ -6,6 +6,8 @@
 #include "SDL_rect.h"
 #include "texture.hh"
 
+// TODO: namespace
+
 class Renderable {
 public:
     Renderable(unsigned int renderX, unsigned int renderY, const std::string& textureName);

@@ -9,7 +9,9 @@ namespace Game {
     class StateManager {
     public:
         StateManager();
-        // TODO: delete copy/assignment operators
+
+        StateManager(const StateManager&) = delete; // disable copy
+        void operator=(const StateManager&) = delete; // disable assign
 
         void init();
 
@@ -18,7 +20,7 @@ namespace Game {
 
         bool isEmpty() const { return states_.empty(); }
 
-        State& activeState() { return *states_.front(); }
+        State& activeState() { return *states_.back(); }
 
     private:
         std::vector<std::unique_ptr<State>> states_;

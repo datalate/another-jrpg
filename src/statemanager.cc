@@ -13,7 +13,9 @@ namespace Game {
     }
 
     void StateManager::popState() {
-        states_.back()->cleanup();
-        states_.pop_back();
+        if (!isEmpty()) {
+            states_.back()->cleanup();
+            states_.pop_back();
+        }
     }
 }
