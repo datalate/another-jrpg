@@ -1,7 +1,9 @@
 #include "worldstate.hh"
 #include "anotherrpg.hh"
 #include "types.hh"
+#include "combatstate.hh"
 #include <iostream>
+#include <memory>
 
 using Character::Player;
 using Level::Position;
@@ -17,6 +19,8 @@ namespace Game {
     }
 
     bool WorldState::init() {
+        std::cout << "WorldState::init()" << std::endl;
+
         lvls_.loadFolder("lev/");
 
         if (!switchToMap("level0")) {
@@ -63,8 +67,8 @@ namespace Game {
                 Position pos = player_->facingPosition();
                 auto npc = currentMap_->npcAt(pos.x, pos.y);
                 if (npc) {
-                    // TODO
                     std::cout << "Interact with: " << npc->textureName() << std::endl;
+                    // TODO
                 }
             }
 
@@ -72,13 +76,6 @@ namespace Game {
             eventCooldown_ = true;
             static const unsigned int coolDown{125}; // milliseconds
             SDL_AddTimer(coolDown, [](Uint32 interval, void* coolDown) -> Uint32 { *(bool*)coolDown = false; return 0; }, &eventCooldown_);
-        }
-    }
-
-    void WorldState::draw(Window::MainWindow& window) {
-        if (redrawNeeded_) {
-            window.render(renderables_);
-            window.update();
         }
     }
 

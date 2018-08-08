@@ -20,7 +20,6 @@ namespace Game {
         virtual void cleanup();
 
         virtual void update(const Input& input);
-        virtual void draw(Window::MainWindow& window);
 
     private:
         bool switchToMap(const std::string& map);

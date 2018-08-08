@@ -22,7 +22,7 @@ namespace Game {
         virtual void cleanup() = 0;
 
         virtual void update(const Input& input) = 0;
-        virtual void draw(Window::MainWindow& window) = 0;
+        virtual void draw(Window::MainWindow& window);
 
         virtual void pause() { paused_ = true; }
         virtual void resume() { paused_ = false; }

@@ -33,8 +33,7 @@ namespace Game {
         while (!quit) {
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_QUIT) {
-                    stateManager_.pushState(std::make_unique<WorldState>(*this));
-                    //quit = true;
+                    quit = true;
                 }
                 //else if (e.type ==
                 else if (e.type == SDL_WINDOWEVENT) {

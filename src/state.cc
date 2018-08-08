@@ -6,4 +6,12 @@ namespace Game {
 
     State::~State() {
     }
+
+    void State::draw(Window::MainWindow& window) {
+        if (redrawNeeded_) {
+            window.clear();
+            window.render(renderables_);
+            window.update();
+        }
+    }
 }

@@ -15,6 +15,7 @@ namespace Game {
         void operator=(const AnotherRpg&) = delete; // disable assign
 
         void run();
+        StateManager& stateManager() { return stateManager_; }
 
     private:
         Window::MainWindow& win_;
